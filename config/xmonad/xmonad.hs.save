@@ -69,7 +69,6 @@ import XMonad.Util.SpawnOnce
    -- ColorScheme module (SET ONLY ONE!)
       -- Possible choice are:
       -- DoomOne
-      -- DoomOne2 (Custom with Nord border colors)
       -- Dracula
       -- GruvboxDark
       -- MonokaiPro
@@ -79,7 +78,7 @@ import XMonad.Util.SpawnOnce
       -- SolarizedDark
       -- SolarizedLight
       -- TomorrowNight
-import Colors.DoomOne2
+import Colors.Nord
 
 myFont :: String
 myFont = "xft:agave Nerd Font Complete Mono:regular:size=9:antialias=true:hinting=true"
@@ -319,7 +318,7 @@ myLayoutHook = avoidStruts $ mouseResize $ windowArrange $ T.toggleLayouts float
                                  ||| tallAccordion
                                  ||| wideAccordion
 
-myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 ", " 10 ", " 11 ", " 12 "]
+myWorkspaces = [" 1 ", " 2 ", " 3 ", " 4 ", " 5 ", " 6 ", " 7 ", " 8 ", " 9 "]
 -- myWorkspaces = [" CLI ", " WEB ", " EDIT ", " SYS ", " VM ", " CHAT ", " MUS ", " VLC ", " GIMP "]
 myWorkspaceIndices = M.fromList $ zipWith (,) myWorkspaces [1..] -- (,) == \x y -> (x,y)
 
@@ -357,7 +356,7 @@ myManageHook = composeAll
 myKeys :: [(String, X ())]
 myKeys =
     -- Xmonad
-        [ ("M-S-x", spawn "xmonad --recompile")  -- Recompiles xmonad
+        [ ("M-S-x", spawn "xmonad --recompile && xmonad --restart")  -- Recompiles xmonad
         --, ("M-S-q", spawn "arcolinux-logout")              -- Quits xmonad
         --, ("M-S-v", spawn "virt-manager")
         --, ("M-t", spawn "thunar")
@@ -366,8 +365,8 @@ myKeys =
     -- Run Prompt
         , ("C-M1-e", spawn "rofi -show drun") -- Rofi
         --, ("M-S-d-<Return>", spawn "j4-dmenu-desktop") -- Dmenu
-        , ("M-d", spawn "dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'") -- Dmenu with custom color and font
-        , ("M-q", spawn ("bash -c pacman -Qqu")) -- Show available packages upgrades
+        , ("M-d", spawn "dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'")
+
     
     -- Useful programs to have a keybinding for launch
         , ("M-S-<Return>", spawn (myTerminal))
@@ -381,15 +380,14 @@ myKeys =
         , ("C-M1-r", spawn ("rofi -show window"))
 
     -- Kill windows
-        , ("M-p", spawn ("killall polybar")) -- Kill the active polybar
         , ("C-q", kill1)     -- Kill the currently focused client
         , ("C-S-a", killAll)   -- Kill all windows on current workspace
 
     -- Workspaces
-        , ("M-S-.", nextScreen)  -- Switch focus to next monitor
-        , ("M-S-,", prevScreen)  -- Switch focus to prev monitor
-        , ("M-C-.", shiftTo Next nonNSP >> moveTo Next nonNSP)       -- Shifts focused window to next ws
-        , ("M-C-,", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
+        , ("M-C-.", nextScreen)  -- Switch focus to next monitor
+        , ("M-C-,", prevScreen)  -- Switch focus to prev monitor
+        , ("M-S->", shiftTo Next nonNSP >> moveTo Next nonNSP)       -- Shifts focused window to next ws
+        , ("M-S-<", shiftTo Prev nonNSP >> moveTo Prev nonNSP)  -- Shifts focused window to prev ws
 
     -- Floating windows
         , ("M-f", sendMessage (T.Toggle "floats")) -- Toggles my 'floats' layout
@@ -408,9 +406,9 @@ myKeys =
         , ("C-g b", bringSelected $ mygridConfig myColorizer) -- bring selected window
 
     -- Windows navigation
-        , ("M-C-m", windows W.focusMaster)  -- Move focus to the master window
-        , ("M-C-j", windows W.focusDown)    -- Move focus to the next window
-        , ("M-C-k", windows W.focusUp)      -- Move focus to the prev window
+        , ("M-m", windows W.focusMaster)  -- Move focus to the master window
+        , ("M-j", windows W.focusDown)    -- Move focus to the next window
+        , ("M-k", windows W.focusUp)      -- Move focus to the prev window
         , ("M-S-m", windows W.swapMaster) -- Swap the focused window and the master window
         , ("M-S-j", windows W.swapDown)   -- Swap focused window with next window
         , ("M-S-k", windows W.swapUp)     -- Swap focused window with prev window
@@ -431,27 +429,27 @@ myKeys =
     -- Window resizing
         , ("M-h", sendMessage Shrink)                   -- Shrink horiz window width
         , ("M-l", sendMessage Expand)                   -- Expand horiz window width
-        , ("M-j", sendMessage MirrorShrink)          -- Shrink vert window width
-        , ("M-k", sendMessage MirrorExpand)          -- Expand vert window width
+        , ("M-M1-j", sendMessage MirrorShrink)          -- Shrink vert window width
+        , ("M-M1-k", sendMessage MirrorExpand)          -- Expand vert window width
 
     -- Sublayouts
     -- This is used to push windows to tabbed sublayouts, or pull them out of it.
-        , ("M-M1-h", sendMessage $ pullGroup L)
-        , ("M-M1-l", sendMessage $ pullGroup R)
-        , ("M-M1-k", sendMessage $ pullGroup U)
-        , ("M-M1-j", sendMessage $ pullGroup D)
+        , ("M-C-h", sendMessage $ pullGroup L)
+        , ("M-C-l", sendMessage $ pullGroup R)
+        , ("M-C-k", sendMessage $ pullGroup U)
+        , ("M-C-j", sendMessage $ pullGroup D)
         , ("M-m", withFocused (sendMessage . MergeAll))
         , ("M-u", withFocused (sendMessage . UnMerge))
         , ("M-y", withFocused (sendMessage . UnMergeAll))
-        , ("C-M1-.", onGroup W.focusUp')    -- Switch focus to next tab
-        , ("C-M1-,", onGroup W.focusDown')  -- Switch focus to prev tab
+        , ("M-.", onGroup W.focusUp')    -- Switch focus to next tab
+        , ("M-,", onGroup W.focusDown')  -- Switch focus to prev tab
 
     
     -- Controls for mocp music player (SUPER-u followed by a key)
-        , ("M-v <Up>", spawn "mocp --play")
-        , ("M-v <Right>", spawn "mocp --next")
-        , ("M-v <Left>", spawn "mocp --previous")
-        , ("M-v <Space>", spawn "mocp --toggle-pause")
+        , ("M-u p", spawn "mocp --play")
+        , ("M-u l", spawn "mocp --next")
+        , ("M-u h", spawn "mocp --previous")
+        , ("M-u <Space>", spawn "mocp --toggle-pause")
 
     
     -- Sound And Brightness
