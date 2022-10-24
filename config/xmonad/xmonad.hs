@@ -366,8 +366,8 @@ myKeys =
     -- Run Prompt
         , ("C-M1-e", spawn "rofi -show drun") -- Rofi
         --, ("M-S-d-<Return>", spawn "j4-dmenu-desktop") -- Dmenu
-        , ("M-d", spawn "dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'") -- Dmenu with custom color and font
-        , ("M-q", spawn ("bash -c pacman -Qqu")) -- Show available packages upgrades
+        , ("S-M1-d", spawn "dmenu_run -i -nb '#191919' -nf '#5fb3b3' -sb '#5fb3b3' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'") -- Dmenu with custom color and font
+        , ("M-q", spawn ("myTerminal -e /bin/bash -c 'pacman -Qqu'")) -- Show available packages upgrades
     
     -- Useful programs to have a keybinding for launch
         , ("M-S-<Return>", spawn (myTerminal))
