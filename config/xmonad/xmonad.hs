@@ -1,4 +1,5 @@
-  -- Base
+  {-# OPTIONS_GHC -Wno-deprecations #-}
+    -- Base
 import XMonad
 import System.Directory
 import System.IO (hPutStrLn)
@@ -382,7 +383,7 @@ myKeys =
 
     -- Kill windows
         , ("M-p", spawn ("killall polybar")) -- Kill the active polybar
-        , ("C-q", kill1)     -- Kill the currently focused client
+        , ("C-M1-q", kill1)     -- Kill the currently focused client
         , ("C-S-a", killAll)   -- Kill all windows on current workspace
 
     -- Workspaces
@@ -505,3 +506,5 @@ main = do
               , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]                    -- order of things in xmobar
               }
         } `additionalKeysP` myKeys
+
+
