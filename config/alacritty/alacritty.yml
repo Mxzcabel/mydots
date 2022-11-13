@@ -1,0 +1,77 @@
+import:
+    # uncomment the flavour you want below:
+    #  - ~/.config/alacritty/catppuccin/mocha.yml
+      - ~/.config/alacritty/catppuccin/macchiato.yml
+    #  - ~/.config/alacritty/catppuccin/frappe.yml
+    #  - ~/.config/alacritty/catppuccin/latte.yml
+
+env:
+ TERM: xterm-256color  
+
+window:
+  columns: 2 
+  lines: 1
+  x: 0
+  y: 0
+  decorations: none
+  opacity: 0.8
+  title: Alacritty
+  dynamic_title: true
+
+class:
+  instance: Alacritty
+  general: Alacritty
+
+scrolling:
+  history: 10000
+  multipler: 3
+
+# Font configuration
+font:
+    normal:
+      family: Hasklug Nerd Font Mono
+      style: Regular
+
+    bold:
+      family: Hasklug Nerd Font Mono
+      style: Bold
+
+    italic:
+      family: Hasklug Nerd Font Mono
+      style: Italic
+
+    bold_italic:
+      family: Hasklug Nerd Font Mono
+      style: Bold Italic    
+
+    size: 13
+
+# Color Scheme
+
+  #colors: *mocha
+
+# Animations
+
+bell:
+   # Values for `animation`:
+   #  #   - Ease
+   #  #   - EaseOut
+   #  #   - EaseOutSine
+   #  #   - EaseOutQuad
+   #  #   - EaseOutCubic
+   #  #   - EaseOutQuart
+   #  #   - EaseOutQuint
+   #  #   - EaseOutExpo
+   #  #   - EaseOutCirc
+   #  #   - Linear
+   animation: EaseOutCubic
+   duration: 2
+   color: '#000000'
+   command: None
+
+# Clipoard
+
+selection:
+  semantic_escape_chars: ",│`|:\"' ()[]{}<>\t" 
+  save_to_clipboard: true
+ 
