@@ -171,6 +171,10 @@ end
 	alias pacrmdeps="pacman -Qqdt | sudo pacman -R -"
 	alias extglob="shopt -s extglob"
 	alias xpg_echo="shopt -s xpg_echo"
+        
+	# Bar, Widgets, System Monitor, etc
+	
+	alias polybar="~/.config/polybar/launch.sh"
 
 	# Git
 
