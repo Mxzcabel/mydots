@@ -5,9 +5,9 @@ set VIRTUAL_ENV_DISABLE_PROMPT "1"
 set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
 ## Export variable need for qt-theme
-if type "qtile" >> /dev/null 2>&1
-   set -x QT_QPA_PLATFORMTHEME "qt5ct"
-end
+# if type "qtile" >> /dev/null 2>&1
+#   set -x QT_QPA_PLATFORMTHEME "qt5ct"
+# end
 
 ## Environment setup
 # Apply .profile: use this to put fish compatible .profile stuff in
@@ -19,6 +19,9 @@ end
 if test -d ~/.local/bin
     if not contains -- ~/.local/bin $PATH
         set -p PATH ~/.local/bin
+	set -p PATH ~/.local/bin/node_modules-BotDiscord
+	set -p PATH ~/.local/bin/node_modules-global
+	set -p PATH ~/.local/bin/python_bins
     end
 end
 
@@ -162,19 +165,30 @@ end
 	alias logind="sudo systemctl restart ly"
 	alias shutd="shutdown -h now"
 
+	# System Management
+
+	alias whoiscompositor="inxi -Gxx | grep compositor"
+
 	# File Manager
 
 	alias ll="ls -l"
 	alias la="ls -a"
 	alias lla="ls -a -l"
 	alias lltr="ls -ltr"
+	alias llata="ls -alt -A"
+	alias llatra="ls -altr -A"
+	alias llarta="ls -altr -A"
 	alias pacrmdeps="pacman -Qqdt | sudo pacman -R -"
 	alias extglob="shopt -s extglob"
 	alias xpg_echo="shopt -s xpg_echo"
+	alias find_latest_modified_by_date="find . -maxdepth 1 -newrmt"
         
 	# Bar, Widgets, System Monitor, etc
 	
-	alias polybar="~/.config/polybar/launch.sh"
+	#	alias polybar="~/.config/polybar/launch.sh"
+
+	# Calibre
+	alias update_calibre="sudo -v && wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin"
 
 	# Git
 
@@ -183,4 +197,10 @@ end
 
 	# Games
 
-	alias lol_bypass_cheat="sudo& sh -c 'sysctl -w abi.vsyscall32=0'"
+	alias lol_bypass_cheat="sudo sysctl -w abi.vsyscall32=0"
+
+	# Nodejs Projects
+	
+	alias local_node_bins="ls ~/Documents/a-Projects/botDiscord/node_modules/.bin/* | xargs ln -sf -t ~/.local/bin/node_modules-BotDiscord/"
+	alias local_node_dep_bins="ls ~/Documents/a-Projects/node_dependencies/node_modules/.bin/* | xargs ln -sf -t ~/.local/bin/node_modules-global/"
+

@@ -102,7 +102,7 @@ myEditor = "emacsclient -c -a 'emacs' "  -- Sets emacs as editor
 -- myEditor = myTerminal ++ " -e vim "    -- Sets vim as editor
 
 myBorderWidth :: Dimension
-myBorderWidth = 2           -- Sets border width for windows
+myBorderWidth = 0           -- Sets border width for windows
 
 myNormColor :: String       -- Border color of normal windows
 myNormColor   = colorBack   -- This variable is imported from Colors.THEME
@@ -116,17 +116,18 @@ windowCount = gets $ Just . show . length . W.integrate' . W.stack . W.workspace
 myStartupHook :: X ()
 myStartupHook = do
     --spawnOnce "conky -c $HOME/.config/bspwm/conky.config &"
-    --spawnOnce "xmobar &"
+    spawnOnce "polybar &"
     --spawnOnce "/home/archie/.xmonad/scripts/autostart.sh &"
     --spawnOnce "nm-applet &"
     --spawnOnce "volumeicon &"
-    --spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
-    --spawnOnce "picom -f -b"
+    spawnOnce "/usr/lib/polkit-gnome/polkit-gnome-authentication-agent-1 &"
+    spawnOnce "picom -f -b"
     spawnOnce "trayer --edge top --align right --widthtype request --padding 7 --SetDockType true --SetPartialStrut true --expand true --monitor 2 --transparent true --alpha 0 --tint 0x282c34  --height 20 &"
     --spawnOnce "xargs xwallpaper --stretch < ~/.xwallpaper"  -- set last saved with xwallpaper
-    --spawnOnce "/home/arctech/.xmonad/scripts/polkit.sh &"  -- Start Policykit in Background
+    --spawnOnce "/home/arctech/.xmonad/scripts/polkit.sh &"  -- start Policykit in Background
     --spawnOnce "xfce4-power-manager &"  -- set PowerManager in Background
-    spawnOnce "nitrogen --restore &"   -- if you prefer nitrogen to feh
+    --spawnOnce "nitrogen --restore &"   -- if you prefer nitrogen to feh
+    spawnOnce "pcmanfm --desktop &" -- for wallpaper management from pcmanfm and desktop icons
     setWMName "Xmonad"
 
 
@@ -164,8 +165,8 @@ myAppGrid = [ ("Audacity", "audacity")
                  , ("Deadbeef", "deadbeef")
                  , ("Emacs", "emacsclient -c -a emacs")
                  , ("Firefox", "firefox")
-                 , ("Geany", "geany")
-                 , ("Geary", "geary")
+                 , ("Firefox Developer Edition", "firefox-developer-edition")
+                 , ("Geary", "geany")
                  , ("Gimp", "gimp")
                  , ("Kdenlive", "kdenlive")
                  , ("LibreOffice Impress", "loimpress")
@@ -343,12 +344,13 @@ myManageHook = composeAll
      , className =? "pinentry-gtk-2"  --> doFloat
      , className =? "splash"          --> doFloat
      , className =? "toolbar"         --> doFloat
+     , className =? "mpv"	      --> doFloat
      , title =? "Oracle VM VirtualBox Manager"  --> doFloat
      , title =? "Mozilla Firefox"     --> doShift ( myWorkspaces !! 1 )
-     , className =? "firefox-developer-edition"   --> doShift ( myWorkspaces !! 1 )
+     , className =? "Firefox Developer Edition"   --> doShift ( myWorkspaces !! 1 )
      , className =? "telegram-desktop"     --> doShift ( myWorkspaces !! 6 )
      , className =? "telegram-desktop"     --> doShift ( myWorkspaces !! 6 )
-     , className =? "vlc"             --> doShift ( myWorkspaces !! 7 )
+     , className =? "vlc"             --> doShift ( myWorkspaces !! 3 )
      , className =? "Gimp"            --> doShift ( myWorkspaces !! 9 )
      , className =? "VirtualBox Manager" --> doShift  ( myWorkspaces !! 4 )
      , (className =? "firefox" <&&> resource =? "Dialog") --> doFloat  -- Float Firefox Dialog
@@ -384,7 +386,7 @@ myKeys =
     -- Kill windows
         , ("M-p", spawn ("killall polybar")) -- Kill the active polybar
         , ("C-M1-q", kill1)     -- Kill the currently focused client
-        , ("C-S-a", killAll)   -- Kill all windows on current workspace
+        , ("C-M1-0", killAll)   -- Kill all windows on current workspace
 
     -- Workspaces
         , ("M-S-.", nextScreen)  -- Switch focus to next monitor
@@ -470,9 +472,9 @@ myKeys =
 main :: IO ()
 main = do
     -- Launching three instances of xmobar on their monitors.
-    xmproc0 <- spawnPipe "xmobar -x 0 $HOME/.config/xmobar/xmobarrc0"
-    xmproc1 <- spawnPipe "xmobar -x 1 $HOME/.config/xmobar/xmobarrc0"
-    xmproc2 <- spawnPipe "xmobar -x 2 $HOME/.config/xmobar/xmobarrc0"
+    --xmproc0 <- spawnPipe "xmobar -x 0 $HOME/.config/xmobar/xmobarrc0"
+    --xmproc1 <- spawnPipe "xmobar -x 1 $HOME/.config/xmobar/xmobarrc0"
+    --xmproc2 <- spawnPipe "xmobar -x 2 $HOME/.config/xmobar/xmobarrc0"
     -- the xmonad, ya know...what the WM is named after!
     xmonad $ ewmh def
         { manageHook         = myManageHook <+> manageDocks
@@ -481,7 +483,7 @@ main = do
                                -- This works perfect on SINGLE monitor systems. On multi-monitor systems,
                                -- it adds a border around the window if screen does not have focus. So, my solution
                                -- is to use a keybinding to toggle fullscreen noborders instead.  (M-<Space>)
-                               -- <+> fullscreenEventHook
+                               <+> fullscreenEventHook
         , modMask            = myModMask
         , terminal           = myTerminal
         , startupHook        = myStartupHook
@@ -490,21 +492,21 @@ main = do
         , borderWidth        = myBorderWidth
         , normalBorderColor  = myNormColor
         , focusedBorderColor = myFocusColor
-        , logHook = dynamicLogWithPP $ namedScratchpadFilterOutWorkspacePP $ xmobarPP
+       -- , logHook = dynamicLogWithPPbb $ namedScratchpadFilterOutWorkspacePP $ xmobarPP
               -- the following variables beginning with 'pp' are settings for xmobar.
-              { ppOutput = \x -> hPutStrLn xmproc0 x                          -- xmobar on monitor 1
-                              >> hPutStrLn xmproc1 x                          -- xmobar on monitor 2
-                              >> hPutStrLn xmproc2 x                          -- xmobar on monitor 3
-              , ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]"           -- Current workspace
-              , ppVisible = xmobarColor "#98be65" "" . clickable              -- Visible but not current workspace
-              , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" . clickable -- Hidden workspaces
-              , ppHiddenNoWindows = xmobarColor "#c792ea" ""  . clickable     -- Hidden workspaces (no windows)
-              , ppTitle = xmobarColor "#b3afc2" "" . shorten 50               -- Title of active window
-              , ppSep =  "<fc=#666666> <fn=1>|</fn> </fc>"                    -- Separator character
-              , ppUrgent = xmobarColor "#C45500" "" . wrap "!" "!"            -- Urgent workspace
+             -- { ppOutput = \x -> hPutStrLn xmproc0 x                          -- xmobar on monitor 1
+             --                 >> hPutStrLn xmproc1 x                          -- xmobar on monitor 2
+             --                 >> hPutStrLn xmproc2 x                          -- xmobar on monitor 3
+             -- , ppCurrent = xmobarColor "#98be65" "" . wrap "[" "]"           -- Current workspace
+             -- , ppVisible = xmobarColor "#98be65" "" . clickable              -- Visible but not current workspace
+             -- , ppHidden = xmobarColor "#82AAFF" "" . wrap "*" "" . clickable -- Hidden workspaces
+             -- , ppHiddenNoWindows = xmobarColor "#c792ea" ""  . clickable     -- Hidden workspaces (no windows)
+             -- , ppTitle = xmobarColor "#b3afc2" "" . shorten 50               -- Title of active window
+             -- , ppSep =  "<fc=#666666> <fn=1>|</fn> </fc>"                    -- Separator character
+             -- , ppUrgent = xmobarColor "#C45500" "" . wrap "!" "!"            -- Urgent workspace
               --, ppExtras  = [windowCount]                                     -- # of windows current workspace
-              , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]                    -- order of things in xmobar
-              }
+             -- , ppOrder  = \(ws:l:t:ex) -> [ws,l]++ex++[t]                    -- order of things in xmobar
+             -- }
         } `additionalKeysP` myKeys
 
 
