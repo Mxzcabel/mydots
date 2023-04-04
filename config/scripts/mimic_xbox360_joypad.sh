@@ -1,0 +1,79 @@
+#! /bin/bash
+#----------------------------------------------------------------------------
+# Description: A simple script to make my joystick configuration
+# Programmer: Ravenbells
+# Follow me on Github: https://github.com/ravenbells
+# Date: 04/04/2023
+#----------------------------------------------------------------------------
+# Make a list of all input devices 
+# and cut to show only device name
+#----------------------------------------------------------------------------
+joypad_input=$(ls /dev/input/by-id/* | cut -d'/' -f5)
+#----------------------------------------------------------------------------
+# Make a list of all input devices and cut to show only event name
+#----------------------------------------------------------------------------
+joypad_event=$(ls -l /dev/input/by-id/* | awk '{print $11}')
+#----------------------------------------------------------------------------
+# Take a look on actual events on system to find mimic one
+proc_device="/proc/bus/input/devices"
+#----------------------------------------------------------------------------
+# First things first, search for a actual mimic pad in progress
+mimic_xpad=$(cat $proc_device | awk '/Microsoft X-Box 360 pad/{print $1}')
+#----------------------------------------------------------------------------
+count=0
+#----------------------------------------------------------------------------
+# Search for a actual progress and if not there (-z) then create
+#----------------------------------------------------------------------------
+if [ -z $mimic_xpad ] ; then
+	joypad_getEvent=""
+	for event in $joypad_input
+	do
+		# echo $event
+		#----------------------------------------------------------------
+		# Count the current time code had go through list
+		#----------------------------------------------------------------
+		((++count))
+	 	if [ $event == "usb-ZEROPLUS_Controller-event-joystick" ] ; then
+			echo "found it!"
+			#----------------------------------------------------------------
+			# Catch for me the event on the list and take the two dots out.
+			# The count is along whitespaces cause every item on list is split by this criteria 
+			#----------------------------------------------------------------
+			joypad_getEvent=$(echo $joypad_event | cut -d' ' -f $count | sed -e 's/^..//')
+			echo "The event is: " $joypad_getEvent
+			#----------------------------------------------------------------
+			# Config of the overall map and calibration for mimic
+			#----------------------------------------------------------------
+			$(xboxdrv --evdev /dev/input/$joypad_getEvent \
+			--silent \
+			--calibration x1=-32767:0:32767,y1=32767:0:-32767,x2=-32767:0:32767,y2=32767:0:-32767 \
+			--detach-kernel-driver \
+			--mimic-xpad \
+			--evdev-absmap ABS_X=x1,ABS_Y=y1,ABS_Z=x2,ABS_RZ=y2,ABS_RX=lt,ABS_RY=rt,ABS_HAT0X=dpad_x,ABS_HAT0Y=dpad_y \
+			--evdev-keymap BTN_EAST=a,BTN_C=b,BTN_SOUTH=x,BTN_NORTH=y,BTN_WEST=lb,BTN_Z=rb,BTN_SELECT=tl,BTN_START=tr,BTN_MODE=guide,BTN_TL2=back,BTN_TR2=start >&0 &)
+			sleep 3
+			break
+		fi		
+	done
+	 
+	if [ "$joypad_getEvent" == "" ] ; then
+		count=0
+	fi
+else
+	echo "There's already a mimic map for xbox360 on events."
+fi
+#----------------------------------------------------------------
+# Get the actual number of lines from mimic and simplify
+# the overview of current mimic event
+#----------------------------------------------------------------
+mimic_xpad_name=$(cat /proc/bus/input/devices | awk '/Microsoft X-Box 360 pad/{print $0}' | cut -d'=' -f2 | sed -e 's/\"//g')
+
+if  [ $count != "0" ] || [ ! -z $mimic_xpad ] ; then
+		nline_xpad=$(cat $proc_device | awk '/Microsoft X-Box 360 pad/{print NR}')
+		((nline_xpad=nline_xpad + 4))
+		getnline_xpad=$(cat $proc_device | head -n $nline_xpad | tail -n 1 | cut -d'=' -f2 | cut -d' ' -f1)
+		echo -n "| xpad name: " $mimic_xpad_name
+		echo " | xpad event: " $getnline_xpad
+else
+		echo "No joypad is connected or some sort of error happened!"
+fi
