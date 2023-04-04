@@ -5,7 +5,7 @@
 # Follow me on Github: https://github.com/ravenbells
 # Date: 04/04/2023
 #----------------------------------------------------------------------------
-# Make a list of all input devices 
+# Make a list of all input devices
 # and cut to show only device name
 #----------------------------------------------------------------------------
 joypad_input=$(ls /dev/input/by-id/* | cut -d'/' -f5)
@@ -14,18 +14,31 @@ joypad_input=$(ls /dev/input/by-id/* | cut -d'/' -f5)
 #----------------------------------------------------------------------------
 joypad_event=$(ls -l /dev/input/by-id/* | awk '{print $11}')
 #----------------------------------------------------------------------------
-# Take a look on actual events on system to find mimic one
+# Find the usb event name on list
+#----------------------------------------------------------------------------
+joypad_event_name=$(echo usb-ZEROPLUS_Controller-event-joystick)
+#----------------------------------------------------------------------------
+# Take a look on current events and joypad's name on system
+# to find mimic pad one
+joypad_name=$(echo Microsoft X-Box 360 pad)
 proc_device="/proc/bus/input/devices"
 #----------------------------------------------------------------------------
 # First things first, search for a actual mimic pad in progress
-mimic_xpad=$(cat $proc_device | awk '/Microsoft X-Box 360 pad/{print $1}')
-#----------------------------------------------------------------------------
+mimic_xpad=$(cat $proc_device | awk '/'"$joypad_name"'/{print $1}')
+#---------------------------------------------------------------------------- 
 count=0
 #----------------------------------------------------------------------------
-# Search for a actual progress and if not there (-z) then create
+# Search for a current progress and if not there (-z) then create
 #----------------------------------------------------------------------------
 if [ -z $mimic_xpad ] ; then
+	#----------------------------------------------------------------
+	# Var for find and get the event on list
+	# if not there, reset the counter
+	#----------------------------------------------------------------
 	joypad_getEvent=""
+	#----------------------------------------------------------------
+	# Identation to research the joypad_event_name inside var
+	#----------------------------------------------------------------
 	for event in $joypad_input
 	do
 		# echo $event
@@ -33,16 +46,17 @@ if [ -z $mimic_xpad ] ; then
 		# Count the current time code had go through list
 		#----------------------------------------------------------------
 		((++count))
-	 	if [ $event == "usb-ZEROPLUS_Controller-event-joystick" ] ; then
+	 	if [ $event == "$joypad_event_name" ] ; then
 			echo "found it!"
 			#----------------------------------------------------------------
-			# Catch for me the event on the list and take the two dots out.
-			# The count is along whitespaces cause every item on list is split by this criteria 
+			# Catch the event on the list and take the two dots out.
+			# The count is along whitespaces cause every item on list 
+			# are "split in" by those criterias. 
 			#----------------------------------------------------------------
 			joypad_getEvent=$(echo $joypad_event | cut -d' ' -f $count | sed -e 's/^..//')
 			echo "The event is: " $joypad_getEvent
 			#----------------------------------------------------------------
-			# Config of the overall map and calibration for mimic
+			# Config of the xmap and calibration for mimic
 			#----------------------------------------------------------------
 			$(xboxdrv --evdev /dev/input/$joypad_getEvent \
 			--silent \
@@ -66,14 +80,12 @@ fi
 # Get the actual number of lines from mimic and simplify
 # the overview of current mimic event
 #----------------------------------------------------------------
-mimic_xpad_name=$(cat /proc/bus/input/devices | awk '/Microsoft X-Box 360 pad/{print $0}' | cut -d'=' -f2 | sed -e 's/\"//g')
-
 if  [ $count != "0" ] || [ ! -z $mimic_xpad ] ; then
-		nline_xpad=$(cat $proc_device | awk '/Microsoft X-Box 360 pad/{print NR}')
+		nline_xpad=$(cat $proc_device | awk '/'"$joypad_name"'/{print NR}')
 		((nline_xpad=nline_xpad + 4))
 		getnline_xpad=$(cat $proc_device | head -n $nline_xpad | tail -n 1 | cut -d'=' -f2 | cut -d' ' -f1)
-		echo -n "| xpad name: " $mimic_xpad_name
-		echo " | xpad event: " $getnline_xpad
+		echo -n "| xpad name: " $joypad_name
+		echo " | xpad event: " "/"$getnline_xpad
 else
 		echo "No joypad is connected or some sort of error happened!"
 fi
