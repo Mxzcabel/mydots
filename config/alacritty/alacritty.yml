@@ -1,12 +1,24 @@
 import:
     # uncomment the flavour you want below:
+    #
+      - ~/.config/alacritty/custom/bittercoffe.yml
+    #
     #  - ~/.config/alacritty/catppuccin/mocha.yml
-      - ~/.config/alacritty/catppuccin/macchiato.yml
+    #  - ~/.config/alacritty/catppuccin/macchiato.yml
     #  - ~/.config/alacritty/catppuccin/frappe.yml
     #  - ~/.config/alacritty/catppuccin/latte.yml
+    #
+    #  - ~/.config/alacritty/gruvbox/dark.yml
+    #
+    #  - ~/.config/alacritty/embers/dark.yml
+    #
+    #  - ~/.config/alacritty/iceberg/dark.yml
+    #
+    #  - ~/.config/alacritty/ocean/dark.yml
 
-env:
- TERM: xterm-256color  
+
+# env:
+  # TERM: xterm-256color  
 
 window:
   columns: 2 
@@ -14,7 +26,7 @@ window:
   x: 0
   y: 0
   decorations: none
-  opacity: 0.8
+  opacity: 0.9
   title: Alacritty
   dynamic_title: true
 
@@ -44,7 +56,7 @@ font:
       family: Hasklug Nerd Font Mono
       style: Bold Italic    
 
-    size: 13
+    size: 15
 
 # Color Scheme
 
