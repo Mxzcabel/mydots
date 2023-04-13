@@ -70,7 +70,7 @@ if [ -z $mimic_xpad ] ; then
 		fi		
 	done
 	 
-	if [ "$joypad_getEvent" == "" ] ; then
+	if [ -z "$joypad_getEvent" ] ; then
 		count=0
 	fi
 else
@@ -80,7 +80,7 @@ fi
 # Get the actual number of lines from mimic and simplify
 # the overview of current mimic event
 #----------------------------------------------------------------
-if  [ $count != "0" ] || [ ! -z $mimic_xpad ] ; then
+if  [ $count != "0" ] || [ -n $mimic_xpad ] ; then
 		nline_xpad=$(cat $proc_device | awk '/'"$joypad_name"'/{print NR}')
 		((nline_xpad=nline_xpad + 4))
 		getnline_xpad=$(cat $proc_device | head -n $nline_xpad | tail -n 1 | cut -d'=' -f2 | cut -d' ' -f1)
@@ -88,4 +88,4 @@ if  [ $count != "0" ] || [ ! -z $mimic_xpad ] ; then
 		echo " | xpad event: " "/"$getnline_xpad
 else
 		echo "No joypad is connected or some sort of error happened!"
-fi
+fi 
