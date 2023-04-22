@@ -372,7 +372,7 @@ myKeys =
         , ("C-M1-e", spawn "rofi -show drun") -- Rofi
         --, ("M-S-d-<Return>", spawn "j4-dmenu-desktop") -- Dmenu
         , ("S-M1-d", spawn "dmenu_run -i -nb '#191919' -nf '#5fb3b3' -sb '#5fb3b3' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'") -- Dmenu with custom color and font
-        , ("M-q", spawn "nitrogen --restore") -- Refresh nitrogen
+        --, ("M-q", spawn "nitrogen --restore") -- Refresh nitrogen
     
     -- Useful programs to have a keybinding for launch
         , ("M-S-<Return>", spawn (myTerminal))
@@ -384,9 +384,10 @@ myKeys =
         , ("C-M1-t", spawn ("tint2"))
         , ("C-M1-o", spawn ("obs"))
         , ("C-M1-r", spawn ("rofi -show window"))
+		, ("C-M1-c", spawn ("parcellite"))
 
     -- Kill windows
-        , ("M-p", spawn ("killall polybar")) -- Kill the active polybar
+        , ("M-p", spawn ("killall parcellite")) -- Kill the active clipboard parcellite
         , ("C-M1-q", kill1)     -- Kill the currently focused client
         , ("C-M1-0", killAll)   -- Kill all windows on current workspace
 
