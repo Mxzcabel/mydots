@@ -80,7 +80,7 @@ fi
 # Get the actual number of lines from mimic and simplify
 # the overview of current mimic event
 #----------------------------------------------------------------
-if  [ $count != "0" ] || [ -n $mimic_xpad ] ; then
+if  [ $count != "0" ] || [ ! -z $mimic_xpad ] ; then
 		nline_xpad=$(cat $proc_device | awk '/'"$joypad_name"'/{print NR}')
 		((nline_xpad=nline_xpad + 4))
 		getnline_xpad=$(cat $proc_device | head -n $nline_xpad | tail -n 1 | cut -d'=' -f2 | cut -d' ' -f1)
