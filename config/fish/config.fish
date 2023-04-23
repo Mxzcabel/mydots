@@ -96,11 +96,11 @@ end
 ## Useful aliases
 # Replace ls with exa
 # alias ls='exa -al --color=always --group-directories-first --icons' # preferred listing
-alias la='exa -a --color=always --group-directories-first --icons'  # all files and dirs
-alias lla='exa -la --color=always --group-directories-first --icons' # all and long format
-alias ll='exa -l --color=always --group-directories-first --icons'  # long format
-alias lt='exa -aT --color=always --group-directories-first --icons' # tree listing
-alias l.="exa -a | egrep '^\.'"                                     # show only dotfiles
+alias la='exa -a --header --git --color=always --group-directories-first --icons'   # all files and dirs
+alias lla='exa -la --header --git --color=always --group-directories-first --icons' # all and long format
+alias ll='exa -l --header --git --color=always --group-directories-first --icons'   # long format
+alias lt='exa -aT --header --git  --color=always --group-directories-first --icons' # tree listing
+alias l.="exa -a --header --git | grep -e '^\.'"                                    # show only dotfiles
 alias ip="ip -color"
 
 # Replace some more things with better alternatives
@@ -163,7 +163,7 @@ end
 
 	# Login Manager
 
-	alias logind="sudo systemctl restart ly"
+	alias logind="sudo systemctl restart lightdm"
 	alias shutd="shutdown -h now"
 
 	# System Management
@@ -201,6 +201,7 @@ end
 	# Games
 
 	alias lol_bypass_cheat="sudo sysctl -w abi.vsyscall32=0"
+	alias xjoypad="~/Documents/a-Projects/mimic_xbox360_joypad.sh"
 
 	# Nodejs Projects
 	
