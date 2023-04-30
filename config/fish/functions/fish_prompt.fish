@@ -1,8 +1,8 @@
 function fish_prompt
     # set -l prompt_symbol '$'
     set -l user_char "󰭟  "
-	set secs (math "$CMD_DURATION / 1000")
-	set mins (math "$secs / 60")
+	set secs (math -s2 "$CMD_DURATION / 1000")
+	set mins (math -s2 "$secs / 60")
 	set time (set_color purple)" 󱑂"\t(date +"%I:%M %p")
 	set flags (set_color red)" 󰃄|󰃄"
 	echo -s \n" "\
