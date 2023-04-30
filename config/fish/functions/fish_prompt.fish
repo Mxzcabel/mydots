@@ -4,14 +4,14 @@ function fish_prompt
 	set secs (math "$CMD_DURATION / 1000")
 	echo -s \n" "\
 	(set_color yellow)"|"\
-	(set_color green)\t(prompt_pwd)\
-	(set_color cyan)" |"(fish_git_prompt)\
+	(set_color green)" 󱞊"\t(prompt_pwd)\
+	(set_color cyan)" 󰊢"(fish_git_prompt)\
 	\n" "\
 	(set_color red)"󰃄|󰃄"\
-	(set_color purple)\t(date +"%I:%M %p")\
-	(set_color grey)" | $secs secs"
+	(set_color purple)" 󱑂"\t(date +"%I:%M %p")\
+	(set_color cd764d)" \; 󰔚 $secs secs"
 	if test $CMD_DURATION
-    	if test $CMD_DURATION -gt (math "1000 * 60")
+    	if test $CMD_DURATION -ge (math "1000 * 60")
         notify-send "$history[1]" "Returned $status, took $(math "$secs / 60 ") minutes"
     	end
 	end
