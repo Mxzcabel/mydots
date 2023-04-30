@@ -97,7 +97,8 @@ end
 # Replace ls with exa
 # alias ls='exa -al --color=always --group-directories-first --icons' # preferred listing
 alias la='exa -aG --git --color=always --group-directories-first --icons'   # all files and dirs
-alias lla='exa -la --header --git --color=always --group-directories-first --icons | bat' # all and long format
+alias lla="exa -la --header --git --color=always --group-directories-first --icons" # all and long format 
+alias llab="exa -la --header --git --color=always --group-directories-first --icons | bat" # all, long format, bat stdin
 alias ll='exa -l --header --git --color=always --group-directories-first --icons'   # long format
 alias lt='exa -aT --header --git  --color=always --group-directories-first --icons' # tree listing
 alias l.="exa -a --header --git | grep -e '^\.'"                                    # show only dotfiles
