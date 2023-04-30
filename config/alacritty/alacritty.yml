@@ -26,7 +26,7 @@ window:
   x: 0
   y: 0
   decorations: none
-  opacity: 0.9
+  opacity: 1
   title: Alacritty
   dynamic_title: true
 
@@ -56,7 +56,7 @@ font:
       family: Hasklug Nerd Font Mono
       style: Bold Italic    
 
-    size: 15
+    size: 18
 
 # Color Scheme
 
