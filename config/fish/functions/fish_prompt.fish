@@ -12,7 +12,7 @@ function fish_prompt
 	if test $CMD_DURATION
     	if test $CMD_DURATION -ge (math "1000 * 60")
 			echo -s $flags $time (set_color cd764d)" \; 󰔚 $mins minutes"
-        	notify-send "$history[1]" "Returned $status, took $mins minutes"
+        	notify-send -a Terminal -i /usr/share/icons/terminal-distrobox-icon.png "$history[1]" "Returned $status, took $mins minutes"
 		else
 			echo -s $flags $time (set_color cd764d)" \; 󰔚 $secs secs"
     	end
