@@ -30,6 +30,7 @@ proc_device="/proc/bus/input/devices"
 #----------------------------------------------------------------------------
 joypad_exists=""
 get_wireless=0
+test_mode=0
 #----------------------------------------------------------------------------
 # First things first, search for a actual mimic pad in progress
 #----------------------------------------------------------------------------
@@ -49,12 +50,73 @@ function mimic_xpad() {
 # the overview of current mimic event
 #----------------------------------------------------------------
 function show_xpad() {
-	nline_xpad=$(cat $proc_device | awk '/'"$joypad_exists"'/{print NR}')
-    ((nline_xpad=nline_xpad + 4))
-	getnline_xpad=$(cat $proc_device | head -n $nline_xpad | tail -n 1 | cut -d'=' -f2 | cut -d' ' -f1)
-   	echo -n "| xpad name: " $joypad_exists
-	echo " | xpad event: " "/"$getnline_xpad
+	if [ $(echo $test_mode) == "0" ] ; then
+		nline_xpad=$(cat $proc_device | awk '/'"$joypad_exists"'/{print NR}')
+    	((nline_xpad=nline_xpad + 4))
+		getnline_xpad=$(cat $proc_device | head -n $nline_xpad | tail -n 1 | cut -d'=' -f2 | cut -d' ' -f1)
+   		echo -n "| xpad name: " $joypad_exists
+		echo " | xpad event: " "/"$getnline_xpad
+	else
+		echo " "
+	 	echo "Done."
+		echo "Use the evtest command to see the mimic event."
+		echo "Change the script with the mimic's event name."
+		echo "At '\$joypad_names'" 
+	fi
 }
+#----------------------------------------------------------------
+# Get some test from inputs. Good if the event is not know by
+# the user or is a new joypad
+#----------------------------------------------------------------
+function displayTest() {
+	joypad_test_event_name=$(evdev-joystick --l | cut -d'/' -f5)
+	#----------------------------------------------------------------
+	# First check the joypad event presence for test
+	#----------------------------------------------------------------
+	if [ -z $joypad_test_event_name ] ; then
+		echo "no event for test was found."
+		exit 2
+	else
+		echo "Your connect input is: "
+    	echo "$joypad_test_event_name"
+    	echo -n "Do you want to use it? [y/n] "
+    	read -e answer
+		case $answer in 
+		#----------------------------------------------------------------
+		# Usage of event
+		#----------------------------------------------------------------
+			y | Y) # if usage is accepted
+				joypad_event_name=$(echo $joypad_test_event_name)
+            	echo -n "Do you want to set as wireless? [y/n] "
+            	read -e answer
+				#----------------------------------------------------------------
+				# Usage of wireless
+				#----------------------------------------------------------------
+            	case $answer in
+               		y | Y) # if accepted wireless
+                    	get_wireless="1"
+                    	test_mode="1"
+                    	;;
+                	n | N) # if denied wireless
+                    	test_mode="1"
+                    	;;
+                	*) # if not know input
+                    	echo "Error: input not know or in bad format"
+                    	exit 3
+                    	;;
+            	esac
+				;;
+			n | N) # if usage is denied			
+				exit 0
+				;;
+			*) # if not know input
+				echo "Error: input not know or in bad format"
+				exit 3
+				;;
+		esac 
+    fi
+}
+
 #----------------------------------------------------------------
 # Display Help and possible arguments
 # Gives a hand on rough and repetitive tasks
@@ -65,6 +127,7 @@ displayHelp() {
 	echo "#####"
 	echo "options:"
 	echo "-h, --help		display this help"
+	echo "-t, --test-mimic	display a test-drive to found the correct event"
 	echo "-w, --wireless		set mimic-xpad as wireless"
 	echo "-e, --event-name	show joypad event name on script"
 	echo "-j, --joypads		show joypad names on script"
@@ -75,6 +138,9 @@ arguments() {
 		-h | --help) 
 			displayHelp
 			exit 0
+			;;
+		-t | --test-mimc)
+			displayTest
 			;;
 		-k | --kill-pid) 
 			kill -9 $(pidof xboxdrv)
@@ -141,9 +207,10 @@ if [ $? -eq 0 ] ; then
 			# Config of the xmap and calibration for mimic
 			#----------------------------------------------------------------
 	        $(xboxdrv --evdev /dev/input/$joypad_getEvent \
-    	    --silent \
+			--silent \
        	    --axismap -Y1=Y1,-Y2=Y2 \
         	--calibration x1=-32767:0:32767,y1=-32767:0:32767,x2=-32767:0:32767,y2=-32767:0:32767 \
+			--detach \
 	        --detach-kernel-driver \
 			$is_wireless \
         	--evdev-absmap ABS_X=x1,ABS_Y=y1,ABS_Z=x2,ABS_RZ=y2,ABS_RX=lt,ABS_RY=rt,ABS_HAT0X=dpad_x,ABS_HAT0Y=dpad_y \
@@ -161,6 +228,8 @@ if [ $? -eq 0 ] ; then
 	fi
 else
 	echo "There's already a mimic map for xbox360 on events."
-	show_xpad
+	if [ -z $test_mode ] || [ $(echo "$test_mode") == "0" ] ; then
+		show_xpad
+	fi
 	exit 2
 fi
