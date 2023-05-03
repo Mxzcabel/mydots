@@ -29,6 +29,7 @@ proc_device="/proc/bus/input/devices"
 # Also make the initial make-sure-variable here for search on list later
 #----------------------------------------------------------------------------
 joypad_exists=""
+get_wireless=0
 #----------------------------------------------------------------------------
 # First things first, search for a actual mimic pad in progress
 #----------------------------------------------------------------------------
@@ -38,7 +39,6 @@ function mimic_xpad() {
     	local mimic=$(cat $proc_device | awk '/'"$joypad"'/{print $1}')
 	    if [ -n "$mimic" ] ; then
 			joypad_exists=$(echo "$joypad")
-			# echo "JOYPAAAAAD" $joypad_exists
 			return 1
 	    fi
 	done
@@ -55,16 +55,21 @@ function show_xpad() {
    	echo -n "| xpad name: " $joypad_exists
 	echo " | xpad event: " "/"$getnline_xpad
 }
-
+#----------------------------------------------------------------
+# Display Help and possible arguments
+# Gives a hand on rough and repetitive tasks
+#----------------------------------------------------------------
 displayHelp() {
 	echo "#####"
 	echo "Script to start mimic xpad with xboxdrv"
 	echo "#####"
 	echo "options:"
-	echo "-h, --help			display this help"
+	echo "-h, --help		display this help"
+	echo "-w, --wireless		set mimic-xpad as wireless"
+	echo "-e, --event-name	show joypad event name on script"
+	echo "-j, --joypads		show joypad names on script"
 	echo "-k, --kill-pid		kill previous mimic event"
 }
-
 arguments() {
 	case "$1" in 
 		-h | --help) 
@@ -75,6 +80,17 @@ arguments() {
 			kill -9 $(pidof xboxdrv)
 			exit 0
 			;;	
+		-w | --wireless)
+			get_wireless=1
+			;;
+		-e | --event-name)
+			echo $joypad_event_name
+			exit 0
+			;;
+		-j | --joypads)
+			echo ${joypad_names[*]}
+			exit 0
+			;;
 		-*)
 			if [ ! -z "$1" ] ; then
 				echo "not a valid command"
@@ -85,13 +101,13 @@ arguments() {
 }
 arguments "$1"
 #----------------------------------------------------------------------------
-# Search for a current progress and if not there (-z) then create
+# Search for a current progress and if not there (-eq 1) then create here
 #----------------------------------------------------------------------------
 mimic_xpad
 if [ $? -eq 0 ] ; then
 	#----------------------------------------------------------------
 	# Var for find and get the event on list
-	# if not there, reset the counter
+	# if not there, display error message in the end
 	#----------------------------------------------------------------
 	joypad_getEvent=""
 	#----------------------------------------------------------------
@@ -113,17 +129,25 @@ if [ $? -eq 0 ] ; then
 			#----------------------------------------------------------------
 			joypad_getEvent=$(echo $joypad_event | cut -d' ' -f $count | sed -e 's/^..//')
 			echo "The event is: " $joypad_getEvent
+			#---------------------------------------------------------------
+			# Set on/off wireless joypad option
+			#----------------------------------------------------------------
+			if [ $(echo "$get_wireless") == "1" ] ; then 
+				is_wireless=$(echo "--mimic-xpad-wireless")
+			else 
+				is_wireless=$(echo "--mimic-xpad")
+			fi
 			#----------------------------------------------------------------
 			# Config of the xmap and calibration for mimic
 			#----------------------------------------------------------------
-			$(xboxdrv --evdev /dev/input/$joypad_getEvent \
-			--silent \
-			--axismap -Y1=Y1,-Y2=Y2 \
-			--calibration x1=-32767:0:32767,y1=-32767:0:32767,x2=-32767:0:32767,y2=-32767:0:32767 \
-			--detach-kernel-driver \
-			--mimic-xpad-wireless \
-			--evdev-absmap ABS_X=x1,ABS_Y=y1,ABS_Z=x2,ABS_RZ=y2,ABS_RX=lt,ABS_RY=rt,ABS_HAT0X=dpad_x,ABS_HAT0Y=dpad_y \
-			--evdev-keymap BTN_EAST=a,BTN_C=b,BTN_SOUTH=x,BTN_NORTH=y,BTN_WEST=lb,BTN_Z=rb,BTN_SELECT=tl,BTN_START=tr,BTN_MODE=guide,BTN_TL2=back,BTN_TR2=start >&0 &)
+	        $(xboxdrv --evdev /dev/input/$joypad_getEvent \
+    	    --silent \
+       	    --axismap -Y1=Y1,-Y2=Y2 \
+        	--calibration x1=-32767:0:32767,y1=-32767:0:32767,x2=-32767:0:32767,y2=-32767:0:32767 \
+	        --detach-kernel-driver \
+			$is_wireless \
+        	--evdev-absmap ABS_X=x1,ABS_Y=y1,ABS_Z=x2,ABS_RZ=y2,ABS_RX=lt,ABS_RY=rt,ABS_HAT0X=dpad_x,ABS_HAT0Y=dpad_y \
+           	--evdev-keymap BTN_EAST=a,BTN_C=b,BTN_SOUTH=x,BTN_NORTH=y,BTN_WEST=lb,BTN_Z=rb,BTN_SELECT=tl,BTN_START=tr,BTN_MODE=guide,BTN_TL2=back,BTN_TR2=start >&0 &)
 			sleep 3
 			mimic_xpad
 			show_xpad
