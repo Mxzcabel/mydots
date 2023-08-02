@@ -1,0 +1,362 @@
+@import "underworld.css";
+
+* {
+    /* `otf-font-awesome` is required to be installed for icons */
+    font-family: FontAwesome, Roboto, Helvetica, Arial, sans-serif;
+    font-size: 14px;
+}
+
+window#waybar {
+    background-color: transparent;
+    opacity: 0.9;
+    min-height: 25px;
+    /*border-top: @overlay1;
+    border-bottom: @overlay2;*/
+    /*background-color: rgba(43, 48, 59, 0.5);*/
+    /*border-bottom: 3px solid rgba(100, 114, 125, 0);*/
+    border-radius: 10px;
+    color: @text;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+window#waybar.hidden {
+    opacity: 0.1;
+}
+
+window#waybar.empty {
+    background-color: transparent;
+}
+window#waybar.solo {
+    background-color: #FFFFFF;
+}
+
+
+window#waybar.termite {
+    background-color: #3F3F3F;
+}
+
+window#waybar.chromium {
+    background-color: #000000;
+    border: none;
+}
+
+button {
+    /* Use box-shadow instead of border so the text isn't offset */
+    box-shadow: inset 0 -3px transparent;
+    /* Avoid rounded borders under each button name */
+    border: none;
+    border-radius: 0;
+    min-width: 25px;
+}
+
+/* https://github.com/Alexays/Waybar/wiki/FAQ#the-workspace-buttons-have-a-strange-hover-effect */
+button:hover {
+    background: inherit;
+    box-shadow: inset 0 -3px #ffffff;
+}
+
+#workspaces button {
+    padding: 0 5px;
+    background-color: transparent;
+    color: @text;
+    font-size: 25px;
+}
+
+
+#workspaces button:hover,
+#workspaces button.active,
+#workspaces button.urgent {
+    box-shadow: inset 0 -5px @overlay2;
+    padding: 0px 10px 0 5px;
+    margin-top: 10px;
+    border-radius: 10px;
+}
+
+#workspaces button:hover {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#workspaces button.active {
+    background-color: @crust;
+}
+
+#workspaces button.urgent {
+    box-shadow: inset 0px -5px @witch;
+    background-color: @deep_witch;
+}
+
+#mode {
+    background-color: @text;
+    border-bottom: 3px solid #ffffff;
+}
+
+#clock,
+#battery,
+#cpu,
+#memory,
+#disk,
+#temperature,
+#backlight,
+#network,
+#language,
+#pulseaudio,
+#wireplumber,
+#custom-media,
+#mode,
+#idle_inhibitor,
+#scratchpad,
+#tray,
+#mpd {
+    padding: 0 10px;
+    color: @subtext1;
+    font-size: 12px;
+    border-radius: 10px;
+}
+
+#window,
+#workspaces {
+    margin-left: 10px;
+    font-size: 12px;
+}
+
+#workspaces * {
+    font-size: 25px;
+}
+
+/* If workspaces is the leftmost module, omit left margin */
+.modules-left > widget:first-child > #workspaces {
+    margin-left: 0;
+}
+
+/* If workspaces is the rightmost module, omit right margin */
+.modules-right > widget:last-child > #workspaces {
+    margin-right: 0;
+    font-size: 30px;
+}
+
+#clock {
+    border-radius: 10px;
+    background-color: @surface1;
+    border-bottom: 3px solid @overlay0;
+    color: @text;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding: 0 20px 0 20px;
+}
+
+/* #battery {
+    background-color: #ffffff;
+    color: #000000;
+} */
+
+#battery.charging, #battery.plugged {
+    color: #ffffff;
+    background-color: #26A65B;
+}
+
+@keyframes blink {
+    to {
+        background-color: #ffffff;
+        color: #000000;
+    }
+}
+
+/*
+#battery.critical:not(.charging) {
+    background-color: #f53c3c;
+    color: #ffffff;
+    animation-name: blink;
+    animation-duration: 0.5s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+    animation-direction: alternate;
+}*/
+
+label:focus {
+    background-color: #000000;
+    font-size: 12px;
+}
+
+#cpu {
+    background-color: @sea;
+    color: @base;
+    border-top: 5px solid @coast;
+    border-left: 3px solid @subtext0;
+    border-radius: 10px;
+}
+
+#memory {
+    background-color: @cbze;
+    color: @base;
+    border-top: 5px solid @cbze2;
+    border-left: 3px solid @subtext0;
+    border-radius: 10px;
+}
+
+#disk {
+    background-color: @crust;
+    border-radius: 10px;
+}
+
+#backlight {
+    background-color: @text;
+}
+
+#network {
+    background-color: @blue2;
+    border-top: 5px solid @blue3;
+    border-right: 3px solid @text;
+    color: @subtext2;
+    border-radius: 10px;
+}
+
+#network.disconnected {
+    background-color: @ruby;
+}
+
+#pulseaudio {
+    background-color: @cian;
+    color: @mantle;
+    border-top: 5px solid @skobeloff;
+    border-right: 3px solid @surface2;
+    font-size: 12px;
+    border-radius: 10px;
+}
+
+#pulseaudio.muted {
+    background-color: #90b1b1;
+    color: #2a5c45;
+}
+
+#wireplumber {
+    background-color: #fff0f5;
+    color: #000000;
+}
+
+#wireplumber.muted {
+    background-color: #f53c3c;
+}
+
+#custom-media {
+    background-color: #66cc99;
+    color: #2a5c45;
+    min-width: 100px;
+}
+
+#custom-media.custom-spotify {
+    background-color: #66cc99;
+}
+
+#custom-media.custom-vlc {
+    background-color: #ffa000;
+}
+
+#temperature,
+#temperature.critical,
+#network,
+#pulseaudio,
+#language,
+#cpu,
+#memory	{
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: 15px;
+}
+
+#temperature {
+    background-color: @jade;
+    color: @base;
+    border-top: 5px solid @emerald;
+    border-left: 3px solid @text;
+}
+
+#temperature.critical {
+    background-color: @ruby;
+    color: @text;
+}
+
+#tray {
+    padding: 5px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: @base;
+    border-top: 4px double @text;
+    border-left: 2px double @text;
+    border-right: 2px double @text;
+    opacity: 0.9;
+    font-size: 10px;
+}
+
+#tray > .passive {
+    -gtk-icon-effect: dim;
+}
+
+#tray > .needs-attention {
+    -gtk-icon-effect: highlight;
+    background-color: #eb4d4b;
+}
+
+#idle_inhibitor {
+    background-color: #2d3436;
+}
+
+#idle_inhibitor.activated {
+    background-color: #ecf0f1;
+    color: #2d3436;
+}
+
+#mpd {
+    background-color: #66cc99;
+    color: #2a5c45;
+}
+
+#mpd.disconnected {
+    background-color: #f53c3c;
+}
+
+#mpd.stopped {
+    background-color: #90b1b1;
+}
+
+#mpd.paused {
+    background-color: #51a37a;
+}
+
+#language {
+    background: @surface0;
+    color: @subtext0;
+    padding: 0 12px;
+    margin-right: 10px;
+    border-top: 5px solid @surface1;
+    border-right: 3px solid @overlay0;
+    border-radius: 10px;
+}
+
+#keyboard-state {
+    background: transparent;
+    color: @subtext0;
+    padding: 0 0px;
+    margin: 0;
+    min-width: 12px;
+    border-radius: 10px;
+}
+
+#keyboard-state > label {
+    padding: 0 5px;
+    font-size: 12px;
+}
+
+#keyboard-state > label.locked {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#scratchpad {
+    background: rgba(0, 0, 0, 0.2);
+}
+
+#scratchpad.empty {
+    background-color: transparent;
+}
