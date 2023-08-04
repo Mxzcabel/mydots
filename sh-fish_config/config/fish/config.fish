@@ -2,7 +2,8 @@
 # Hide welcome message
 set fish_greeting
 set VIRTUAL_ENV_DISABLE_PROMPT "1"
-set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+set -x MANPAGER "vim -M +MANPAGER -"
+#set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
 
 ## Export variable need for qt-theme
 # if type "qtile" >> /dev/null 2>&1
@@ -109,7 +110,7 @@ alias ip="ip -color"
 # [ ! -x /usr/bin/yay ] && [ -x /usr/bin/paru ] && alias yay='paru'
 
 # Common use
-alias grubup="sudo update-grub"
+alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
 alias fixpacman="sudo rm /var/lib/pacman/db.lck"
 alias tarnow='tar -acf '
 alias untar='tar -xvf '
@@ -162,10 +163,12 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 
 # Personal Functions
 
-	# Login Manager
+	# Systemctl Management
 
-	alias logind="sudo systemctl restart lightdm"
+	alias logout="systemctl restart lemurs"
 	alias shutd="shutdown -h now"
+	alias hibernate="systemctl hibernate"
+	alias sleep="systemctl suspend"
 
 	# System Management
 
@@ -173,7 +176,7 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 
 	# File Manager
 	
-	alias sudo="sudo "
+	alias sudo="sudo	"
 	# alias ll="ls -l"
 	# alias la="ls -a"
 	# alias lla="ls -a -l"
@@ -188,11 +191,10 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 	alias find_latest_modified_by_date="find . -maxdepth 1 -newrmt"
         
 	# Bar, Widgets, System Monitor, etc
+		# alias polybar="~/.config/polybar/launch.sh"
 	
-	#	alias polybar="~/.config/polybar/launch.sh"
-
 	# Calibre - (sudo -v &&)
-	alias update_calibre="wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin"
+	alias calibre_install="wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin"
 
 	# Git
 
@@ -202,7 +204,6 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 	# Games
 
 	alias lol_bypass_cheat="sudo sysctl -w abi.vsyscall32=0"
-	alias xjoypad="~/Documents/a-Projects/mimic_xbox360_joypad.sh"
 
 	# Nodejs Projects
 	
