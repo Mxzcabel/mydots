@@ -2,8 +2,10 @@
 # Hide welcome message
 set fish_greeting
 set VIRTUAL_ENV_DISABLE_PROMPT "1"
-set -x MANPAGER "vim -M +MANPAGER -"
-#set -x MANPAGER "sh -c 'col -bx | bat -l man -p'"
+set -x LESSUTFCHARDEF "E000-F8FF:p,F0000-FFFFD:p,100000-10FFFD:p"
+set -x MANROFFOPT "-c"
+set -x MANPAGER "sh -c 'col -bx | bat --paging=always -l man -p'"
+#set -x MANPAGER "vim -M +MANPAGER -"
 
 ## Export variable need for qt-theme
 # if type "qtile" >> /dev/null 2>&1
@@ -97,6 +99,7 @@ end
 ## Useful aliases
 # Replace ls with exa
 # alias ls='exa -al --color=always --group-directories-first --icons' # preferred listing
+alias l="exa -G --git --color=always --group-directories-first --icons" # list files and dirs except hidden ones
 alias la='exa -aG --git --color=always --group-directories-first --icons'   # all files and dirs
 alias lla="exa -la --header --git --color=always --group-directories-first --icons" # all and long format 
 alias llab="exa -la --header --git --color=always --group-directories-first --icons | bat" # all, long format, bat stdin
@@ -184,6 +187,7 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 	alias llata="ls -alt -A"
 	alias llatra="ls -altr -A"
 	alias llarta="ls -altr -A"
+	alias batp="bat --plain --style grid,header"
 	alias pacman="sudo pacman"
 	alias pacrmdeps="pacman -Qqdt | sudo pacman -R -"
 	alias extglob="shopt -s extglob"
