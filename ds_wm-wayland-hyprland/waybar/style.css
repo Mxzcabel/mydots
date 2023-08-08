@@ -220,6 +220,8 @@ label:focus {
 
 #network.disconnected {
     background-color: @ruby;
+    border-top: 5px solid @mantle;
+    border-right: 3px solid @surface2;
 }
 
 #pulseaudio {
