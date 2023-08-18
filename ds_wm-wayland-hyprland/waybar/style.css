@@ -76,6 +76,7 @@ button:hover {
 
 #workspaces button:hover {
     background: rgba(0, 0, 0, 0.2);
+    outline-color: transparent;
 }
 
 #workspaces button.active {
