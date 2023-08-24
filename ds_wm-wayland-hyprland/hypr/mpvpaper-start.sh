@@ -2,7 +2,7 @@
 # Description: A humble script to change how mpvpaper behavior plays mp4 videos
 # Programmer: Mxzcabel
 # Follow me on Github: https:/github.com/mxzcabel
-# Date: 23/08/2023
+# Date: 24/08/2023
 #
 #
 #
@@ -16,17 +16,19 @@ playlist=0
 function playnum() {
 	name_onlist=$(cat $dir/$list | awk "NR==$wish_number")
 	printf '%s\n' "Playing now: $name_onlist"
-	mpvpaper -p -f -o "auto-start --loop vf-add=fps=30:round=near input-ipc-server=$XDG_CACHE_HOME" DVI-D-1 $dir/$name_onlist
+	mpvpaper -p -f -o "auto-start --loop vf-add=fps=30:round=near input-ipc-server=/tmp/mpvpaper" DVI-D-1 $dir/$name_onlist
 }
 
 function playfull() {
-	mpvpaper -p -f -o "auto-start --loop-playlist vf-add=fps=30:round=near input-ipc-server=$XDG_CACHE_HOME" DVI-D-1 $dir
+	printf '%s\n' "Playing full list."
+	mpvpaper -p -f -o "auto-start --loop-playlist vf-add=fps=30:round=near input-ipc-server=/tmp/mpvpaper" DVI-D-1 $dir
 }
 
 function start() {
-	printf '%s\n' "Videos on dir: $number_onlist"
+	printf '%s\n' "Directory in use: $dir"
+	printf '%s\n' "Videos inside directory: $number_onlist"
 	if [ -z $wish_number ] || [ $wish_number -lt 0 ] || [ $wish_number -gt $number_onlist ] ; then
-		echo "You need to input a number valid on the list or change to playlist all!"
+		printf '%s\n' "You need to input a number valid on the list or change to playlist all!"
 		exit 2
 	else
 		if [ -n "$(pidof mpvpaper)" ] ; then kill -9 $(pidof mpvpaper) ; fi
