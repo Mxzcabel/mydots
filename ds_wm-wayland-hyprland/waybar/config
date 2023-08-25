@@ -6,7 +6,7 @@
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": ["wlr/workspaces","tray","memory","cpu","temperature"],
-    "modules-center": ["clock"],
+    "modules-center": ["custom/bar","clock#1","clock#2","clock#3","custom/bar-2"],
     "modules-right": ["pulseaudio","network","hyprland/language"],
     // Modules configuration
     "wlr/workspaces": {
@@ -88,17 +88,30 @@
         "icon-size": 20,
         "spacing": 10
     },
-    "clock": {
-        // "timezone": "America/Sao_Paulo",
-        "tooltip-format": "\n<tt><big>{calendar}</big></tt>",
-        "format-alt": "{:%Y-%m-%d}"
+    "custom/bar": { 
+	"format":""
     },
+    "clock#1": {
+	"locale":"pt_BR.UTF-8",
+	"format":"  {:%A}    |"
+    },
+    "clock#2": {
+        "timezone": "America/Sao_Paulo",
+	"format":" {:%I:%M %p}    |",
+        // "tooltip-format": "\n<tt><big>{calendar}</big></tt>",
+    },
+    "clock#3": {
+  	"format":"{:%m/%d}  "
+    },
+    "custom/bar-2": {
+	"format": " ┃ "
+    },	
     "cpu": {
-        "format": "{usage}% ",
+        "format": "{usage}% ",
         "tooltip": true
     },
     "memory": {
-        "format": "{}% 󰍛",
+        "format": "{}% ",
 	"format-icon": 25
     },
     "temperature": {
