@@ -5,11 +5,11 @@
     // "width": 1280, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
-    "modules-left": ["wlr/workspaces","tray","memory","cpu","temperature"],
+    "modules-left": ["hyprland/workspaces","tray","memory","cpu","temperature"],
     "modules-center": ["custom/bar","clock#1","clock#2","clock#3","custom/bar-2"],
     "modules-right": ["pulseaudio","network","hyprland/language"],
     // Modules configuration
-    "wlr/workspaces": {
+    "hyprland/workspaces": {
     	// "disable-scroll": true,
     	// "all-outputs": true,
     	// "warp-on-scroll": false,
@@ -104,7 +104,12 @@
   	"format":"{:%m/%d}  "
     },
     "custom/bar-2": {
-	"format": " ┃ "
+	"format": "{} .",
+	"interval": 3600,
+	// "exec": "~/.config/waybar/arch-checkupdates.sh",
+	// "exec-if": "[ -f /tmp/upd_versions ]",
+	// "on click": "alacritty -e 'pacman -Syu'; pkill -SIGRTMIN+8waybar",
+	"signal": 8
     },	
     "cpu": {
         "format": "{usage}% ",
