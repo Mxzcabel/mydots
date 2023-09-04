@@ -1,0 +1,12 @@
+# Use NVidia eXec to turn on gpu and start modules
+# Place this service on /etc/systemd/system/
+[Unit]
+Description=Start Modules from Nvidia
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/nvx on
+
+[Install]
+WantedBy=multi-user.target
+
