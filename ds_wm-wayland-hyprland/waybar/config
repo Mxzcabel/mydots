@@ -6,7 +6,7 @@
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": ["hyprland/workspaces","tray","memory","cpu","temperature"],
-    "modules-center": ["custom/bar","clock#1","clock#2","clock#3","custom/bar-2"],
+    "modules-center": ["custom/bar","clock#1","clock#2","clock#3","custom/updates"],
     "modules-right": ["pulseaudio","network","hyprland/language"],
     // Modules configuration
     "hyprland/workspaces": {
@@ -29,7 +29,7 @@
 	    "9": "󰲱",
 	    "urgent": "",
 	    "focused": "",
-	    "default": ""
+	    "default": " "
          }
     },
     "keyboard-state": {
@@ -103,13 +103,17 @@
     "clock#3": {
   	"format":"{:%m/%d}  "
     },
-    "custom/bar-2": {
-	"format": "{} .",
-	"interval": 3600,
-	// "exec": "~/.config/waybar/arch-checkupdates.sh",
-	// "exec-if": "[ -f /tmp/upd_versions ]",
-	// "on click": "alacritty -e 'pacman -Syu'; pkill -SIGRTMIN+8waybar",
-	"signal": 8
+    "custom/updates": {
+	"format": "{icon}{}",
+	"format-icons": [" ┃","󱖣 ",""," ┃ "],
+	"interval": 10,
+	"return-type": "json",
+	"exec-if": "[ -f /tmp/upd_versions ]",
+	"exec": "~/.config/waybar/arch_upd-bar.sh",
+	"on-click": "sleep 0.15 && ~/.config/waybar/arch_chckpds.sh",
+	"on-click-right": "~/.config/waybar/arch_updbar-rst.sh",
+	"signal": 9,
+	"tooltip": true
     },	
     "cpu": {
         "format": "{usage}% ",

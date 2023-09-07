@@ -148,7 +148,21 @@ button:hover {
     font-weight: bold;
 }
 
-#custom-bar-2 {
+@keyframes new-updates {
+  to {color:#4CDD85;}
+}
+
+@keyframes refreshing {
+  0%   {color:#555555;}
+  20%  {color:#1793D1;}
+  40%  {color:#555555;}
+  60%  {color:#1793D1;}
+  80%  {color:#555555;}
+  95%  {color:#1793D1;}
+  100% {color:transparent;}
+}
+
+#custom-updates {
     color: @rgb1;
     font-size: 20px;
     margin-left: -5px;
@@ -156,6 +170,31 @@ button:hover {
     padding-left: 10px;
     padding-right: 10px;
     border-radius: 0px 10px 10px 0px;
+}
+
+#custom-updates.updates {
+    color: @base;
+}
+
+#custom-updates.new-updates {
+    animation-name: new-updates;
+    animation-iteration-count: 20;
+    animation-direction: alternate;
+    animation-duration: 0.5s;
+}
+
+#custom-updates.up-to-date {
+    color: @blue;
+}
+
+#custom-updates.refreshing {
+    animation-name: refreshing;
+    animation-timing-function: linear;
+    animation-duration: 10s;
+}
+
+#custom-updates.offline {
+   color: @ruby;	
 }
 
 #custom-bar {
@@ -168,7 +207,7 @@ button:hover {
 #clock.1,
 #clock.2,
 #clock.3,
-#custom-bar-2 {
+#custom-updates {
     border-top: 3px solid @rgb1;
 }
 
