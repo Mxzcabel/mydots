@@ -4,12 +4,12 @@
 # This script depends on 'fuzzel'
 
 
-UPV=/tmp/upd_versions
+UPV="/tmp/upd_versions"
 
 [ "$(cat ${UPV})" = "refreshing" ] && exit 1
 
 fzz() {
-	fuzzel -d -w 80 -R --font=monospace:size=9 --background=111111EE \
+	fuzzel -d -w 120 -R --font=monospace:size=12 --background=111111EE \
 		--border-color=111111FF --selection-color=111111EE --text-color=999999AA \
 		--selection-text-color=999999DA --log-level=none --log-no-syslog "$1"
 }

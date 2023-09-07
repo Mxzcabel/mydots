@@ -105,10 +105,10 @@
     },
     "custom/updates": {
 	"format": "{icon}{}",
-	"format-icons": [" ┃","󱖣 ",""," ┃ "],
+	"format-icons": [" " ,"󱖣 ","","  "],
 	"interval": 10,
 	"return-type": "json",
-	"exec-if": "[ -f /tmp/upd_versions ]",
+	// "exec-if": "[ -f /tmp/upd_versions ]",
 	"exec": "~/.config/waybar/arch_upd-bar.sh",
 	"on-click": "sleep 0.15 && ~/.config/waybar/arch_chckpds.sh",
 	"on-click-right": "~/.config/waybar/arch_updbar-rst.sh",

@@ -9,23 +9,20 @@
 UPD="/tmp/updates"
 UPV="/tmp/upd_versions"
 percentage="100" # don't move [5]
-cur=$(checkupdates | wc -l)
+cur=$(checkupdates -n)
+curn=$(checkupdates -n | wc -l)
+
+printf "%s" "$curn" > "$UPD" ; [ $(cat $UPD) -eq $(cat $UPD) ] && printf "%s" "$cur" > "$UPV" || truncate -s 0 $UPV
 
 if [ ! -s ${UPV} ]; then
 	percentage="0" # don't move [9]
 	class="up-to-date"
 	tooltip="0"
 else
-	if [ "$(cat ${UPV})" != "refreshing" ]
-	then
+	if [ "$(cat ${UPV})" != "refreshing" ]; then
 		percentage="100"
 		class="updates" #don't move [16]
-		
-		read prev 2>/dev/null <$UPD
-		[ $cur -le ${prev:-0} ] && exit
-		echo $cur >| $UPD
-
-		tooltip=$(echo ${UPD})
+		tooltip=$(cat $UPD)
 	else
 		percentage="60"
 		class="refreshing"
@@ -34,18 +31,20 @@ else
 fi
 
 [ ! $(type -P fuzzel)  ] && 
-	menu="[on  click: *please install 'fuzzel'*]\n[right-click: refresh db]" ||
-       	menu="[on  click: view updates]\n[right-click: refresh db]"
+	menu="On  click: *please install 'fuzzel'*\nRight-click: refresh db" ||
+       	menu="On  click: view updates\nRight-click: refresh db"
 
-synced="Last sync: $(date -r ${UPV} +%b%d-%H:%M)"
+synced="Last sync: $(date -r ${UPV} +%d/%b-%H:%M)"
 
 if [ "${percentage}" != "30" ]
 then
+	[ $tooltip == "0" ] && toolOTP="" || toolOTP=$(echo $tooltip)
+
 	if [ "${class}" = "refreshing" ]
 	then
-		printf '%s\n' "{\"class\":\"$class\",\"percentage\": $percentage,\"tooltip\":\"$tooltip\"}"
+		printf '%s\n' "{\"class\":\"$class\",\"percentage\": $percentage,\"tooltip\":\"$toolOTP\"}"
 	else
-		printf '%s\n' "{\"class\":\"$class\",\"percentage\": $percentage,\"tooltip\":\"Updates: $tooltip\n$synced\n\n$menu\",\"text\":\"$tooltip\"}"
+		printf '%s\n' "{\"class\":\"$class\",\"percentage\": $percentage,\"tooltip\":\"Updates: $tooltip\n$synced\n\n$menu\",\"text\":\"$toolOTP\"}"
 	fi	
 else
 	class="offline"
