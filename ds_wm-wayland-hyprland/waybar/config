@@ -6,8 +6,8 @@
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": ["hyprland/workspaces","tray","memory","cpu","temperature"],
-    "modules-center": ["custom/bar","clock#1","clock#2","clock#3","custom/updates"],
-    "modules-right": ["pulseaudio","network","hyprland/language"],
+    "modules-center": ["custom/bar","clock","custom/updates"],
+    "modules-right": ["pulseaudio","network","hyprland/language","custom/power"],
     // Modules configuration
     "hyprland/workspaces": {
     	// "disable-scroll": true,
@@ -91,17 +91,11 @@
     "custom/bar": { 
 	"format":""
     },
-    "clock#1": {
-	"locale":"pt_BR.UTF-8",
-	"format":"  {:%A}    |"
-    },
-    "clock#2": {
-        "timezone": "America/Sao_Paulo",
-	"format":" {:%I:%M %p}    |",
+    "clock": {
         // "tooltip-format": "\n<tt><big>{calendar}</big></tt>",
-    },
-    "clock#3": {
-  	"format":"{:%m/%d}  "
+        "timezone": "America/Sao_Paulo",
+	"locale":"en_GB.UTF-8",
+	"format":"  {:%A   |   %I:%M %p  |   %y/%m/%d}  "
     },
     "custom/updates": {
 	"format": "{icon}{}",
@@ -193,6 +187,10 @@
         "escape": true,
         "exec": "$HOME/.config/waybar/mediaplayer.py 2> /dev/null" // Script in resources folder
         // "exec": "$HOME/.config/waybar/mediaplayer.py --player spotify 2> /dev/null" // Filter player based on name
-    }
+    },
+    "custom/power": {
+	"format": "⏽󰤄",
+	"on-click": "wlogout",
+	"on-click-right": "wlogout"
+    }	
 }
-

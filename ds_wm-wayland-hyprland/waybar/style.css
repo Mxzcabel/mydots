@@ -56,6 +56,7 @@ button:hover {
 #workspaces button {
     padding: 0 5px;
     background-color: transparent;
+    outline-color: transparent;
     color: @text;
     font-size: 25px;
 }
@@ -70,8 +71,7 @@ button:hover {
 }
 
 #workspaces button:hover {
-    background: rgba(0, 0, 0, 0.2);
-    outline-color: transparent;
+    background: rgba(0, 0, 0, 0.8);
 }
 
 #workspaces button.active {
@@ -137,8 +137,8 @@ button:hover {
 
 .modules-center {
     margin-top: 5px;
-    margin-right: 15px;
-    background-color: @crust;
+    margin-right: 25px;
+    background-color: transparent;
 }
 
 .modules-center #clock {
@@ -205,20 +205,15 @@ button:hover {
    margin-left: -2px;
 }
 
-#clock.1,
-#clock.2,
-#clock.3,
+#clock,
 #custom-updates {
     border-top: 3px solid @rgb1;
 }
 
-#clock.1 {
+#clock {
     margin-left: -15px;
-    border-radius: 10px 0px 0px 10px;
-}
-
-#clock.3 {
     padding-left: 15px;
+    border-radius: 10px 0px 0px 10px;
 }
 
 /* #battery {
@@ -297,7 +292,7 @@ label:focus {
     background-color: @cian;
     color: @mantle;
     border-top: 5px solid @skobeloff;
-    border-right: 3px solid @surface2;
+    border-right: 3px solid @text;
     font-size: 12px;
     border-radius: 10px;
 }
@@ -336,7 +331,7 @@ label:focus {
 #pulseaudio,
 #language,
 #cpu,
-#memory	{
+#memory {
     margin-bottom: 10px;
     margin-top: 10px;
     font-size: 15px;
@@ -405,10 +400,21 @@ label:focus {
     background: @surface0;
     color: @subtext0;
     padding: 0 12px;
-    margin-right: 10px;
     border-top: 5px solid @surface1;
-    border-right: 3px solid @overlay0;
+    border-right: 3px solid @subtext1;
     border-radius: 10px;
+}
+
+#custom-power {
+    background: @crust;
+    color: @subtext0;
+    border-top: 5px solid @surface0;
+    border-right: 3px solid @overlay0;
+    font-size: 18px;
+    border-radius: 10px;
+    padding: 0 12px;
+    margin: 10px 0px 10px 5px;
+
 }
 
 #keyboard-state {
