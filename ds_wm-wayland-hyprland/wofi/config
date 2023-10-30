@@ -1,0 +1,12 @@
+show=dmenu
+location=bottom
+orientation=vertical
+global_coords=true
+dynamic_lines=true
+hide_search=true
+hide_scroll=false
+line_wrap=off
+lines=3
+width=25%
+yoffset=-40
+
