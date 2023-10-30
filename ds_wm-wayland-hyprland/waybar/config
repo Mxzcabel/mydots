@@ -1,14 +1,47 @@
-{
+[{
+    "layer": "top", // Waybar at top layer
+    "output": ["HDMI-A-1"],
+    "height": 58, // Waybar height (to be removed for auto height)
+    "spacing": 4, // Gaps between modules (4px)
+    // Choose the order of the modules
+    "modules-left": ["hyprland/workspaces"], 
+    // Modules configuration
+    "hyprland/workspaces": {
+    	// "disable-scroll": true,
+    	// "all-outputs": true,
+    	// "warp-on-scroll": false,
+	"on-scroll-up": "hyprctl dispatch workspace e+1",
+	"on-scroll-down": "hyprctl dispatch workspace e-1",
+	"on-click": "activate",
+    	"format": "{icon}",
+   	"format-icons": {
+	    "1": "󰟒",
+	    "2": "󰲣",
+	    "3": "󰲥",
+	    "4": "󰲧",
+	    "5": "󰲩",
+	    "6": "󰲫",
+	    "7": "󰲭",
+	    "8": "󰲯",
+	    "9": "󰲱",
+	    "urgent": "",
+	    "focused": "",
+	    "default": " "
+         }
+    },
+ },
+ { 
     "layer": "top", // Waybar at top layer
     "output": ["DP-2"],
     // "position": "bottom", // Waybar position (top|bottom|left|right)
-    "height": 38, // Waybar height (to be removed for auto height)
+    "height": 58, // Waybar height (to be removed for auto height)
     // "width": 1280, // Waybar width
     "spacing": 4, // Gaps between modules (4px)
     // Choose the order of the modules
     "modules-left": ["hyprland/workspaces","tray","memory","cpu","temperature"],
     "modules-center": ["custom/bar","clock","custom/updates"],
     "modules-right": ["pulseaudio","network","hyprland/language","custom/power"],
+
     // Modules configuration
     "hyprland/workspaces": {
     	// "disable-scroll": true,
@@ -194,4 +227,4 @@
 	"on-click": "wlogout",
 	"on-click-right": "wlogout"
     }	
-}
+}]
