@@ -33,7 +33,9 @@ window {
 }
 
 #text {
-	padding: 4px;
+	padding: 0px;
+	margin-top: 5px;
+	margin-bottom: -10px;
 	color: white;
 }
 
