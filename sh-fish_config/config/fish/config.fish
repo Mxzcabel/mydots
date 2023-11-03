@@ -122,6 +122,7 @@ alias rmpkg="sudo pacman -Rdd"
 alias psmem='ps auxf | sort -nr -k 4'
 alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 alias nano='nano -l'
+alias rm='rm -I '
 alias ..='cd ..'
 alias ...='cd ../..'
 alias ....='cd ../../..'
@@ -179,7 +180,7 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 
 	# File Manager
 	
-	alias sudo="sudo	"
+	alias sudo="sudo "
 	# alias ll="ls -l"
 	# alias la="ls -a"
 	# alias lla="ls -a -l"
