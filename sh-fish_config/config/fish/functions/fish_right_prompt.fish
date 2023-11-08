@@ -15,14 +15,14 @@ function def_cmdDuration
 	set mins (math -s2 "$secs / 60")
 	set hrs  (math -s2 "$mins / 60")
 	set time (set_color purple)" 󱑂 "(date +"%I:%M|%p")
-	
-    	if test $CMD_DURATION -ge (math "1000 * 60")
-		printf '\n%s' $time (set_color brblack)" 󰔚 $mins minutes"
-        	notify-send -a Terminal -i /usr/share/icons/alacritty.png "$history[1]" "Returned $status, took $mins minutes"
-	else if test $CMD_DURATION -ge (math "1000 * 3600")
-		printf '\n%s' $time (set_color brblack)" 󰔚 $hrs hours"
+
+	if test $CMD_DURATION -ge (math "1000 * 3600")
+		printf '\n%s' $time (set_color brblack)" 󰔚 $hrs|hrs"
 		notify-send -a Terminal -i /usr/share/icons/alacritty "$history[1]" "Returned $status, took $hrs hours"
+	else if test $CMD_DURATION -ge (math "1000 * 60")
+		printf '\n%s' $time (set_color brblack)" 󰔚 $mins|mins"
+        	notify-send -a Terminal -i /usr/share/icons/alacritty.png "$history[1]" "Returned $status, took $mins minutes"
 	else
-		printf '%s' $time (set_color brblack)" 󰔚 $secs secs"
+		printf '%s' $time (set_color brblack)" 󰔚 $secs|secs"
     	end
 end

@@ -1,6 +1,6 @@
 function fish_prompt
 	# Set prompt variables # 
-	set -g prompt_symbol normal #color for fish prompt
+	set -g prompt_text normal #color for fish prompt
 	set -g fish_prompt_pwd_dir_length 1 # lenght of pwd's path
 	## A set of colors to use ##
 	set -g colorblank white
@@ -16,69 +16,95 @@ function fish_prompt
     	set -g __fish_git_prompt_use_informative_chars 1	
 	set -g __fish_git_prompt_showupstream informative
 	set -g __fish_git_prompt_describe_style contains
-    	set -g __fish_git_prompt_char_dirtystate " "
-    	set -g __fish_git_prompt_char_untrackedfiles " "
-    	set -g __fish_git_prompt_char_cleanstate "  "
-	set -g __fish_git_prompt_char_stashstate " ᛩ"
-	set -g __fish_git_prompt_char_invalidstate "#,✖"
+    	set -g __fish_git_prompt_char_dirtystate "|  "
+    	set -g __fish_git_prompt_char_untrackedfiles "|  "
+    	set -g __fish_git_prompt_char_cleanstate "|  "
+	set -g __fish_git_prompt_char_stashstate "| ᛩ "
+	set -g __fish_git_prompt_char_invalidstate "|#,✖ "
     	##-- The git prompt's default format is ' (%s)'. --##
 	##-- We don't want the leading space. --##
 	#
 	# Define PWD's output #
-	set_color $prompt_symbol $colorgrey
-	prompt_settings_init
-	set_color $prompt_symbol -b $colorgrey
-	printf '%s'\
-	(set_color $colorverde)"󱞊 "(prompt_pwd | sed 's/~/ᛠ/')
-    	set_color $prompt_symbol -b normal
-	set_color $prompt_symbol $colorgrey
-	prompt_settings_end
+	#
+	## Breaker's char ##
+	prompt_settings_char $colorblank "breaker" "none"
+	##
+	prompt_settings_init $colorgrey
+	prompt_settings_char $colorverde "prompt_pwd"
+	prompt_settings_end $colorgrey
 	#
 	# Define Git's output #
-	if test (fish_git_prompt)
-		set_color $prompt_symbol $colorvin
-		prompt_settings_init
-		set_color $prompt_symbol -b $colorvin
-		printf '%s'\
-		(set_color $coloramr)\ue5fb(fish_git_prompt)
-		set_color $prompt_symbol -b normal
-		set_color $prompt_symbol $colorvin
-		prompt_settings_end
-	end
+	if test (fish_git_prompt)		
+		## Breaker's char ##
+		prompt_settings_char $colorblank "breaker"
+		##
+		prompt_settings_init $colorvin
+		prompt_settings_char $coloramr "prompt_git"
+		prompt_settings_end $colorvin
+		##
+		## Breaker's char ##
+		prompt_settings_char $colorblank "breaker"
+		##
+	else
+		## Breaker's char ##
+		prompt_settings_char $colorblank "breaker"
+		##
+	end	
 	#
-	# Set user_char #   	
-	prompt_configs
+	# Function user_char #
+	prompt_settings_init $colornegra
+	prompt_settings_char $colorblank "prompt_symbols"
+        prompt_settings_end $colornegra
 end
 #
-# Function user_char #
+# Prompt settings #
+##-- Functions here defines char and a cool background among powerlines glyphs --##
 #
-##-- Function here defines char and a cool blackground among powerlines glyphs --##
-function prompt_configs
-	set_color $prompt_symbol $colornegra
-	prompt_settings_init
-    	set_color $prompt_symbol -b $colornegra
-	prompt_settings_char
-        set_color $prompt_symbol $colorblank
-	set_color $prompt_symbol -b normal
-    	set_color $prompt_symbol $colornegra
-        prompt_settings_end
-end
-#
-# User_char settings #
 ##-- The inital char for bg left tweak --##
-function prompt_settings_init	
-   printf '\n%s' \ue0ba
+function prompt_settings_init	 
+   color_setting_text $argv[1]
+   printf '%s' \ue0ba
+   color_setting_bg $argv[1]
 end
 #
 ##-- The actual char used --##
-function prompt_settings_char	
-    printf '%s' "󱓩 󱀝"\uf101 \uf101
+function prompt_settings_char
+    ### Set color --###
+    color_setting_text $argv[1]
+    ###
+    ###-- Set which prompt to use and how --###
+    switch $argv[2]
+	    case "prompt_symbols"
+    		printf '%s' "󱓩 󱀝"\uf101 \uf101
+
+	    case "prompt_pwd"
+		printf '%s' "󱞊 "(prompt_pwd | sed 's/~/ᛠ/')
+
+	    case "prompt_git"
+             	printf '%s' \ue5fb(fish_git_prompt)
+
+	    case "breaker"
+		if test $argv[3] -a $argv[3] = "none"
+			printf '\n%s'
+		else
+			printf '\n%s\n' \ueacc\ueacc\ueacc\ueacc\ueacc
+		end
+    end
+    ###
 end
 #
 ##-- The final char for bg right edge --##
 function prompt_settings_end
+    color_setting_bg normal
+    color_setting_text $argv[1]   
     printf '%s' \ue0b0
 end
 #
-# Font #
-# https://codeyarns.com/tech/2013-06-29-how-to-get-notification-on-long-duration-command-completion-in-fish.html
+##-- Set the prompt colors for text and background --##
+function color_setting_text
+   set_color $prompt_text $argv[1]
+end
+
+function color_setting_bg
+   set_color $prompt_text -b $argv[1]
+end
