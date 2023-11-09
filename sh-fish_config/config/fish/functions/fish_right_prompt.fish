@@ -1,5 +1,9 @@
 function fish_right_prompt
-    def_cmdDuration
+    set -g colortime 		purple
+    set -g colorcd	 	brblack
+    set -g colorfg		2A1624
+    set -g colorbg  		brred
+
     set -q VIRTUAL_ENV_DISABLE_PROMPT
     or set -g VIRTUAL_ENV_DISABLE_PROMPT true
     set -q VIRTUAL_ENV
@@ -7,22 +11,26 @@ function fish_right_prompt
 
     set_color normal
     string join " " -- $venv $duration $vcs $d
+    
+    prompt_settings_init $colorfg
+    def_cmdDuration $colortime $colorcd $colorfg $colorbg
+    prompt_settings_end $colorfg
 end
-
-# Set my time configuration
+    # Set my time configuration
 function def_cmdDuration
 	set secs (math -s2 "$CMD_DURATION / 1000")
 	set mins (math -s2 "$secs / 60")
 	set hrs  (math -s2 "$mins / 60")
-	set time (set_color purple)" 󱑂 "(date +"%I:%M|%p")
+	set time (set_color $argv[1])" 󱑂 "(date +"%I:%M|%p")
+	set_color $argv[3] 
 
 	if test $CMD_DURATION -ge (math "1000 * 3600")
-		printf '\n%s' $time (set_color brblack)" 󰔚 $hrs|hrs"
+		printf '\n%s' $time (set_color $argv[2])" 󰔚 $hrs|hrs"
 		notify-send -a Terminal -i /usr/share/icons/alacritty "$history[1]" "Returned $status, took $hrs hours"
 	else if test $CMD_DURATION -ge (math "1000 * 60")
-		printf '\n%s' $time (set_color brblack)" 󰔚 $mins|mins"
+		printf '\n%s' $time (set_color $argv[2])" 󰔚 $mins|mins"
         	notify-send -a Terminal -i /usr/share/icons/alacritty.png "$history[1]" "Returned $status, took $mins minutes"
 	else
-		printf '%s' $time (set_color brblack)" 󰔚 $secs|secs"
+		printf '%s' $time (set_color $argv[2])" 󰔚 $secs|secs"
     	end
 end
