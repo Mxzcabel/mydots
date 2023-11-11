@@ -2,7 +2,7 @@ function fish_right_prompt
     set -g colortime 		purple
     set -g colorcd	 	brblack
     set -g colorfg		2A1624
-    set -g colorbg  		brred
+    set -g colorback		fff
 
     set -q VIRTUAL_ENV_DISABLE_PROMPT
     or set -g VIRTUAL_ENV_DISABLE_PROMPT true
@@ -13,8 +13,11 @@ function fish_right_prompt
     string join " " -- $venv $duration $vcs $d
     
     prompt_settings_init $colorfg
-    def_cmdDuration $colortime $colorcd $colorfg $colorbg
+    def_cmdDuration $colortime $colorcd $colorfg
     prompt_settings_end $colorfg
+
+    # Set OTP back to normal color
+    set_color $colorback
 end
     # Set my time configuration
 function def_cmdDuration

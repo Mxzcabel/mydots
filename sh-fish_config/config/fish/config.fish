@@ -99,7 +99,7 @@ end
 ## Useful aliases
 # Replace ls with exa
 # alias ls='exa -al --color=always --group-directories-first --icons' # preferred listing
-alias l="exa -G --git --color=always --group-directories-first --icons" # list files and dirs except hidden ones
+alias l="exa -G --color=always --group-directories-first --icons" # list files and dirs except hidden ones
 alias la='exa -aG --git --color=always --group-directories-first --icons'   # all files and dirs
 alias lla="exa -la --header --git --color=always --group-directories-first --icons" # all and long format 
 alias llab="exa -la --header --git --color=always --group-directories-first --icons | bat" # all, long format, bat stdin
