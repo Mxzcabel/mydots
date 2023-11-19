@@ -2,17 +2,24 @@ function fish_right_prompt
     set -g colortime 		purple
     set -g colorcd	 	brblack
     set -g colorfg		2A1624
+    set -g colorbblue		333399
     set -g colorback		fff
 
     set -q VIRTUAL_ENV_DISABLE_PROMPT
     or set -g VIRTUAL_ENV_DISABLE_PROMPT true
     set -q VIRTUAL_ENV
     and set -l venv (string replace -r '.*/' '' -- "$VIRTUAL_ENV")
+    if test $venv 
+	    set_color -b $colorgrey
+	    set_color $colorblank
+	    printf '%s\e' "󰇙󱞟󰇙" (set_color $colorback)
+	    set_color -b $colorbblue 
+    	    printf '%s' \ueb70 (string join " " -- $venv $duration $vcs $d) " "
+	    set_color -b $colorfg
+	else
+    	    prompt_settings_init $colorfg
+    end
 
-    set_color normal
-    string join " " -- $venv $duration $vcs $d
-    
-    prompt_settings_init $colorfg
     def_cmdDuration $colortime $colorcd $colorfg
     prompt_settings_end $colorfg
 

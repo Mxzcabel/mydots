@@ -78,7 +78,7 @@ function prompt_settings_char
     ###-- Set which prompt to use and how --###
     switch $argv[2]
 	    case "prompt_symbols"
-    		printf '%s\e' "🗁 🞜 "\uf101 \uf101
+    		printf '%s' "🗁 🞜 "\uf101 \uf101
 
 	    case "prompt_pwd"
 		printf '%s' "󱞊 "(prompt_pwd | sed 's/~/ᛠ/')
