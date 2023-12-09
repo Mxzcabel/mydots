@@ -200,6 +200,7 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 	
 	# Calibre - (sudo -v &&)
 	alias calibre_install="wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin"
+	alias calibre="calibre --start-in-tray --detach"
 
 	# Git
 
