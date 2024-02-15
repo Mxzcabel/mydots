@@ -168,23 +168,16 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 # Personal Functions
 
 	# Systemctl Management
-
 	alias logout="systemctl restart lemurs"
 	alias shutd="shutdown -h now"
 	alias hibernate="systemctl hibernate"
 	alias sleep="systemctl suspend"
 
 	# System Management
-
 	alias whoiscompositor="inxi -Gxx | grep compositor"
 
 	# File Manager
-	
 	alias sudo="sudo "
-	# alias ll="ls -l"
-	# alias la="ls -a"
-	# alias lla="ls -a -l"
-	# alias lltr="ls -ltr"
 	alias llata="ls -alt -A"
 	alias llatra="ls -altr -A"
 	alias llarta="ls -altr -A"
@@ -194,25 +187,27 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 	alias extglob="shopt -s extglob"
 	alias xpg_echo="shopt -s xpg_echo"
 	alias find_latest_modified_by_date="find . -maxdepth 1 -newrmt"
-        
-	# Bar, Widgets, System Monitor, etc
-		# alias polybar="~/.config/polybar/launch.sh"
-	
+       
 	# Calibre - (sudo -v &&)
 	alias calibre_install="wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin"
 	alias calibre="calibre --start-in-tray --detach"
 
-	# Git
+	# Nordvpn
+	alias nordbr="nordvpn connect br"
+	alias nordca="nordvpn connect ca"
+	alias nordde="nordvpn connect de"
+	alias norddd="nordvpn disconnect"
+	alias nordrr="nordvpn rate"	
 
+	# Git
 	alias gitlog="git log --oneline"
 	alias gitcommit="git commit -m"
 
-	# Games
-
-	alias lol_bypass_cheat="sudo sysctl -w abi.vsyscall32=0"
+	# SSH Authentication
+	alias strssh-agent="systemctl start --user ssh-agent.service"
+	alias stpssh-agent="systemctl stop --user ssh-agent.service"
 
 	# Nodejs Projects
-	
 	alias local_node_bins="ls ~/Documents/a-Projects/botDiscord/node_modules/.bin/* | xargs ln -sf -t ~/.local/bin/node_modules-BotDiscord/"
 	alias local_node_dep_bins="ls ~/Documents/a-Projects/node_dependencies/node_modules/.bin/* | xargs ln -sf -t ~/.local/bin/node_modules-global/"
 
