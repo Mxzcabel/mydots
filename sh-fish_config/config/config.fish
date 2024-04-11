@@ -172,6 +172,11 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 	alias shutd="shutdown -h now"
 	alias hibernate="systemctl hibernate"
 	alias sleep="systemctl suspend"
+	
+	# AUR Helper
+	alias paruaur="paru -Syua"
+	alias parurr="paru -Rd"
+	alias paruclcc="paru -Sc --mode=aur"
 
 	# System Management
 	alias whoiscompositor="inxi -Gxx | grep compositor"
@@ -187,6 +192,9 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 	alias extglob="shopt -s extglob"
 	alias xpg_echo="shopt -s xpg_echo"
 	alias find_latest_modified_by_date="find . -maxdepth 1 -newrmt"
+
+	# Obs
+	alias obs="env QT_QPA_PLATFORMTHEME=qt5ct obs"
        
 	# Calibre - (sudo -v &&)
 	alias calibre_install="wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin"
