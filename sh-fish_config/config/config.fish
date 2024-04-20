@@ -113,12 +113,9 @@ alias ip="ip -color"
 # [ ! -x /usr/bin/yay ] && [ -x /usr/bin/paru ] && alias yay='paru'
 
 # Common use
-alias update-grub="sudo grub-mkconfig -o /boot/grub/grub.cfg"
-alias fixpacman="sudo rm /var/lib/pacman/db.lck"
 alias tarnow='tar -acf '
 alias untar='tar -xvf '
 alias wget='wget -c '
-alias rmpkg="sudo pacman -Rdd"
 alias psmem='ps auxf | sort -nr -k 4'
 alias psmem10='ps auxf | sort -nr -k 4 | head -10'
 alias nano='nano -l'
@@ -135,7 +132,6 @@ alias fgrep='fgrep --color=auto'
 alias egrep='egrep --color=auto'
 alias hw='hwinfo --short'                          # Hardware Info
 alias big="expac -H M '%m\t%n' | sort -h | nl"     # Sort installed packages according to size in MB
-alias gitpkg='pacman -Q | grep -i "\-git" | wc -l' # List amount of -git packages
 
 # Get fastest mirrors
 alias mirror="sudo reflector -f 30 -l 30 --number 10 --verbose --save /etc/pacman.d/mirrorlist"
@@ -143,21 +139,20 @@ alias mirrord="sudo reflector --latest 50 --number 20 --sort delay --save /etc/p
 alias mirrors="sudo reflector --latest 50 --number 20 --sort score --save /etc/pacman.d/mirrorlist"
 alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pacman.d/mirrorlist"
 
-# Help people new to Arch
-# alias apt='man pacman'
-# alias apt-get='man pacman'
-# alias please='sudo'
-# alias tb='nc termbin.com 9999'
-
 # Cleanup orphaned packages
-alias cleanup='sudo pacman -Rns (pacman -Qtdq)'
+alias paccleanup='sudo pacman -Rns (pacman -Qtdq)'
 
-# Get the error messages from journalctl
-alias jctl="journalctl -p 3 -xb"
+# Show all available packages to update
+alias pacshowup="pacman -Syu --print-format %n:%v | nl"
+
+# Remove database locker in case of unexpected interrumption
+alias pacfixdb="sudo rm /var/lib/pacman/db.lck"
+
+# List amount of -git packages
+alias pacgitpkg='pacman -Q | grep -i "\-git" | wc -l'
 
 # Recent installed packages
-alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
-
+alias pacrip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 
 ## Run fastfetch if session is interactive
 #if status --is-interactive && type -q neofetch
@@ -168,6 +163,7 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 # Personal Functions
 
 	# Systemctl Management
+        alias jctl="journalctl -p 3 -xb" # Get the error messages from journalctl
 	alias logout="systemctl restart lemurs"
 	alias shutd="shutdown -h now"
 	alias hibernate="systemctl hibernate"
@@ -176,7 +172,7 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 	# AUR Helper
 	alias paruaur="paru -Syua"
 	alias parurr="paru -Rd"
-	alias paruclcc="paru -Sc --mode=aur"
+	alias paruclcc="paru -Scd --mode=aur"
 
 	# System Management
 	alias whoiscompositor="inxi -Gxx | grep compositor"
@@ -187,8 +183,6 @@ alias rip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 	alias llatra="ls -altr -A"
 	alias llarta="ls -altr -A"
 	alias batp="bat --plain --style grid,header"
-	alias pacman="sudo pacman"
-	alias pacrmdeps="pacman -Qqdt | sudo pacman -R -"
 	alias extglob="shopt -s extglob"
 	alias xpg_echo="shopt -s xpg_echo"
 	alias find_latest_modified_by_date="find . -maxdepth 1 -newrmt"
