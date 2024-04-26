@@ -143,7 +143,7 @@ alias mirrora="sudo reflector --latest 50 --number 20 --sort age --save /etc/pac
 alias paccleanup='sudo pacman -Rns (pacman -Qtdq)'
 
 # Show all available packages to update
-alias pacshowup="pacman -Syu --print-format %n:%v | nl"
+alias pacshowup="sudo pacman -Syu --print-format %n:%v | nl"
 
 # Remove database locker in case of unexpected interrumption
 alias pacfixdb="sudo rm /var/lib/pacman/db.lck"
@@ -191,7 +191,7 @@ alias pacrip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 	alias obs="env QT_QPA_PLATFORMTHEME=qt5ct obs"
        
 	# Calibre - (sudo -v &&)
-	alias calibre_install="wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin"
+	alias calibre-install="wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin"
 	alias calibre="calibre --start-in-tray --detach"
 
 	# Nordvpn

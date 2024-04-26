@@ -90,7 +90,7 @@ function prompt_settings_char
 		if test $argv[3] -a $argv[3] = "none"
 			printf '\n%s'
 		else
-			printf '\n%s\n' \u25E4\u25E4\u25E4\u25E5\u25E5\u25E5
+			printf '\n%s\n' \ueb6e\ueb6e\ueb6e\ueb6e\ueb6e\ueb6e\ueb6e\ueb6e\ueb6e\ueb6e\ueb6e\ueb6e\ueb6e
 		end
     end
     ###
