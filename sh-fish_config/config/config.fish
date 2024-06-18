@@ -20,11 +20,22 @@ end
 
 # Add ~/.local/bin to PATH
 if test -d ~/.local/bin
+  # First the usual bin for my user
     if not contains -- ~/.local/bin $PATH
-        set -p PATH ~/.local/bin
-	set -p PATH ~/.local/bin/node_modules-BotDiscord
-	set -p PATH ~/.local/bin/node_modules-global
-	set -p PATH ~/.local/bin/python_bins
+      set -p PATH ~/.local/bin
+    end
+  # Second the npm folder
+    if not contains -- ~/.local/bin/npm $PATH
+	set -p PATH ~/.local/bin/npm
+      set -x npm_config_prefix "$HOME/.local/bin/npm"
+    end
+  # Third my python folder for virtual environments
+    if not contains -- ~/.local/bin/python $PATH	
+    	set -p PATH ~/.local/bin/python
+    end
+  # Fourth the Doom for emacs
+    if not contains -- ~/.local/bin/doom $PATH
+      set -p PATH ~/.local/bin/doom
     end
 end
 
@@ -194,6 +205,9 @@ alias pacrip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 	alias calibre-install="wget -nv -O- https://download.calibre-ebook.com/linux-installer.sh | sudo sh /dev/stdin"
 	alias calibre="calibre --start-in-tray --detach"
 
+	# Discord
+	alias discord="webcord -m"
+
 	# Nordvpn
 	alias nordbr="nordvpn connect br"
 	alias nordca="nordvpn connect ca"
@@ -209,7 +223,6 @@ alias pacrip="expac --timefmt='%Y-%m-%d %T' '%l\t%n %v' | sort | tail -200 | nl"
 	alias strssh-agent="systemctl start --user ssh-agent.service"
 	alias stpssh-agent="systemctl stop --user ssh-agent.service"
 
-	# Nodejs Projects
-	alias local_node_bins="ls ~/Documents/a-Projects/botDiscord/node_modules/.bin/* | xargs ln -sf -t ~/.local/bin/node_modules-BotDiscord/"
-	alias local_node_dep_bins="ls ~/Documents/a-Projects/node_dependencies/node_modules/.bin/* | xargs ln -sf -t ~/.local/bin/node_modules-global/"
+	# Emcas
+	alias emacsclient="emacsclient -c -a 'emacs'" 
 

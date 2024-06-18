@@ -18,12 +18,12 @@ function fish_prompt
     	set -g __fish_git_prompt_use_informative_chars 1	
 	set -g __fish_git_prompt_showupstream informative
 	set -g __fish_git_prompt_describe_style contains
-    	set -g __fish_git_prompt_char_dirtystate "󱇧"
-    	set -g __fish_git_prompt_char_untrackedfiles "󰝒"
-	set -g __fish_git_prompt_char_stagedstate "󱀺"
-    	set -g __fish_git_prompt_char_cleanstate "󰈖"
-	set -g __fish_git_prompt_char_stashstate "󰈠"
-	set -g __fish_git_prompt_char_invalidstate "󰮘"
+    	set -g __fish_git_prompt_char_dirtystate " 󱇧 "
+    	set -g __fish_git_prompt_char_untrackedfiles " 󰝒 "
+	set -g __fish_git_prompt_char_stagedstate " 󱀺 "
+    	set -g __fish_git_prompt_char_cleanstate "󰈖"
+	set -g __fish_git_prompt_char_stashstate " 󰈠 "
+	set -g __fish_git_prompt_char_invalidstate " 󰮘 "
     	##-- The git prompt's default format is ' (%s)'. --##
 	##-- We don't want the leading space. --##
 	#
