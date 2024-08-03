@@ -36,10 +36,10 @@ function def_cmdDuration
 
 	if test $CMD_DURATION -ge (math "1000 * 3600")
 		printf '\n%s' $time (set_color $argv[2])" 󰔚 $hrs|hrs"
-		notify-send -a Terminal -i /usr/share/icons/alacritty "$history[1]" "Returned $status, took $hrs hours"
+		notify-send -a Terminal "$history[1]" "Returned $status, took $hrs hours"
 	else if test $CMD_DURATION -ge (math "1000 * 60")
 		printf '\n%s' $time (set_color $argv[2])" 󰔚 $mins|mins"
-        	notify-send -a Terminal -i /usr/share/icons/alacritty.png "$history[1]" "Returned $status, took $mins minutes"
+        	notify-send -a Terminal "$history[1]" "Returned $status, took $mins minutes"
 	else
 		printf '%s' $time (set_color $argv[2])" 󰔚 $secs|secs"
     	end

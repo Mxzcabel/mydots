@@ -1,0 +1,36 @@
+#! /bin/bash
+#------------------------------------------------------------------
+#- Script by: mxzcabel
+#- https://github.com/mxzcabel
+#- Date: 24/08/03
+#- https://wiki.hyprland.org/IPC/#xdg_runtime_dirhyprhissocketsock
+#- Description: This script activate other keymaps for specific
+#-------------- applications and trigger back to the original if
+#-------------- any other 'activewindow' event is detected.
+#-------------- in this example Emacs is the triggered application.
+#------------------------------------------------------------------
+#
+# Keyboard device name
+myKeyboard="logitech-usb-receiver-keyboard"
+
+# The application you desire to switch keymaps
+application="Emacs,GNU"
+
+function handle () {
+  local detectedapp=$(printf "%s" $1 | sed -n "s/\(activewindow>>$application\)/\1/p" | sed -n "s/^.*\($application\).*/\1/g p")
+  local anyOtherWindow=$(printf "%s" $1 | sed -n "s/\(activewindow>>\)/\1/p" | sed -e "s/^.*$application.*//g")
+
+  # switch to second keymap if application
+  # is an activewindow
+  if [[ $detectedapp == $application ]]; then
+      hyprctl switchxkblayout $myKeyboard 1 >/dev/null
+  fi
+
+  # switch to the main keymap if any other
+  # application is an activewindow
+  if [[ -z $detectedapp ]] && [[ -n $anyOtherWindow ]]; then
+      hyprctl switchxkblayout $myKeyboard 0 >/dev/null
+  fi
+}
+
+socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do handle "$line"; done
