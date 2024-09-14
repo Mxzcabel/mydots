@@ -66,12 +66,9 @@ button:hover {
     /*box-shadow: inset 0 1px @black;*/
 }
 
-#workspaces button:hover {
-  color: @juicylemon; 
-}
-
+#workspaces button:hover,
 #workspaces button.active {
-    color: @juicylemon;
+  color: @juicylemon; 
 }
 
 #workspaces button.urgent {

@@ -36,9 +36,10 @@
     "format": "{icon}",
    	"format-icons": {
 	    "urgent": "",
-	    "active": "",
+	    "active": "󰟃",
       "special": "󰽤",
-	    "default": ""
+	    "empty": "",
+      "default": "󰮍",
       }
     },
     "tray": {
@@ -56,13 +57,14 @@
         "tooltip": false
     },
     "memory": {
-        "format": "<span font_size='18pt' rise='-3pt'></span><span> {percentage}% ❘</span>",
+        "format": "<span font_size='18pt' rise='-3pt'></span><span> {used}Gi ❘</span>",
         "tooltip": false
     },
     "temperature": {
-        // "thermal-zone": 2,
-        // "hwmon-path": "/sys/class/hwmon/hwmon2/temp1_input",
-        "critical-threshold": 80,
+        "interval": 10,
+        "thermal-zone": 1,
+        "hwmon-path": "/sys/class/hwmon/hwmon1/temp1_input",
+        "critical-threshold": 100,
         "format-critical": "<span font_size='18pt' rise='-2pt'>{icon}</span><span> {temperatureC}°C</span>",
         "format": "<span font_size='18pt' rise='-2pt'>{icon}</span><span> {temperatureC}°C</span>",
         "format-icons": ["", "", ""],
@@ -70,20 +72,21 @@
     },
     "network#wired": {
         "interval": 2,
-        "interface": "enp42s0",
+        "interface": "e*",
         "format-ethernet": "<span font_size='18pt' rise='-3pt'>󰈁</span>",
-	      "tooltip-format-ethernet": "{ifname}",
-        "tooltip-format-disconnected": "",
-        "format-linked": "<span font_size='18pt' rise='-3pt'>󰩟</span>{ifname} (No IP)",
-        "format-disconnected": "<span font_size='18pt' rise='-3pt'>󱞐</span>"
+	      "tooltip-format-ethernet": "{ifname}\n{ipaddr}",
+        "tooltip-format-disconnected": "No network",
+        "tooltip-format-linked": "No IP",
+        "format-linked": "<span font_size='18pt' rise='-3pt'>󰈂<span font_size='10pt' rise='5pt'>No </span>󱦂</span>",
+        "format-disconnected": "<span font_size='18pt' rise='-3pt'>󰈂</span>"
     },
     "network#wireless": {
         "interval": 2,
-        "interface": "wlan0",
+        "interface": "wlan*",
         "format-wifi": "<span font_size='18pt' rise='-3pt'>󰖩</span>",
-	      "tooltip-format-wifi": "{essid}({signalStrength}%)",
-        "tooltip-format-disconnected": "",
-        "format-disconnected": "<span font_size='18pt' rise='-3pt'>󱞐</span>"
+	      "tooltip-format-wifi": "{ifname}\n{essid}({signalStrength}%)\n{ipaddr}",
+        "tooltip-format-disconnected": "No network",
+        "format-disconnected": "<span font_size='18pt' rise='-3pt'>󰤭</span>"
     },
     "pulseaudio": {
         "format": "<span font_size='18pt' rise='-3pt'>{icon}</span>{volume}% {format_source}",
@@ -111,7 +114,7 @@
       "format": "<span font_size='18pt' rise='-3pt'></span><span>{}󰔄 ❘</span>",
       "tooltip": true,
       "interval": 3600,
-      "exec": "wttrbar --custom-indicator {temp_C}",
+      "exec": "wttrbar --location Oslo,Norway --custom-indicator {temp_C}",
       "return-type": "json"
     },    
     "custom/countdown": {
@@ -123,6 +126,7 @@
     "custom/power": {
     	"format": "⏽󰤄",
   	  "on-click": "wlogout",
-	    "on-click-right": "wlogout"
+	    "on-click-right": "wlogout",
+      "tooltip": false
     }	
 }
