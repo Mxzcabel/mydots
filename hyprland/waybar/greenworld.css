@@ -1,0 +1,18 @@
+/*
+*
+* Mxzcabel's palette
+* Maintainer: Mxzcabel
+*
+*/
+
+@define-color black #000;
+@define-color white #fff;
+@define-color fungus #fffacf;
+@define-color darkfog rgba(0, 0, 0, 0.2);
+@define-color cloudy #d3d3d3;
+@define-color moss #071a00;
+@define-color deepmoss #1a1e21;
+@define-color lemonsmash #354E3D;
+@define-color juicylemon #B4FF99;
+@define-color grapefruit #b30013;
+@define-color lavanda #e9ceff;
