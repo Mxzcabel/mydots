@@ -1,0 +1,63 @@
+#! /bin/bash
+#-----------------------------------------------------------
+# Script to reconnect to Nordvpn after suspend or hibernate
+#-----------------------------------------------------------
+
+function nordland () {
+	printf '%s' "$(nordvpn status | sed -n 's/Country: \([A-Z][a-z]*\)/\1/p')"
+}
+
+function connection () {
+	printf '%s' "$(nordvpn status | sed -n 's/Status: \([A-Z]\)/\1/p')"
+}
+
+function getCountry () {
+	printf '%s' "$(awk '{ for(i=1;i<=NF;i++) print $i }' $1 | sed -En "s/^($2)/\1/p")"
+}
+
+function testConnection () {
+	[[ $(connection) == "Connected" ]] && printf '%s' 1 || printf '%s' 0
+}
+
+function redoConnection () {
+	if [[ $(testConnection) -eq 1 ]]; then 
+		nordvpn disconnect
+	fi
+	
+	sleep 2
+	nordvpn set tray off
+
+	while [[ $(testConnection) -eq 0 ]] ; do
+		nordvpn connect "$printCountry"
+		sleep 5
+	done
+
+	nordvpn set tray on
+}
+
+if [[ $1 != "" ]]; then
+	country=$(printf '%s' $1)
+	tmpfile=$(printf '%s' "/tmp/countries")
+	nordvpn countries > $tmpfile
+	printCountry=$(getCountry "$tmpfile" "$country")
+
+	if [[ $printCountry == "" ]]; then
+		printf '%s' "No country with this name was found on the list."
+		rm $tmpfile
+		exit 1
+	fi
+else
+	if [[ $(testConnection) -eq 1 ]] ; then
+		pritCountry=$(printf '%s' $(nordland))
+	else
+		exit 0
+	fi
+fi
+
+redoConnection
+
+if [[ -f $tmpfile ]]; then
+	rm $tmpfile
+fi
+
+exit 0

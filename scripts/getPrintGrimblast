@@ -1,0 +1,25 @@
+#! /bin/bash
+
+screenshotsFolder=$(printf '%s' $HOME/Pictures/screenshots/)
+
+if [[ ! $(type ksnip) ]]; then
+  exit 1
+fi
+
+if [[ ! -d $screenshotsFolder ]]; then
+  mkdir -p $screenshotsFolder
+fi
+
+if [[ $1 == "focusedWindow" ]]; then
+    grim=$(grimblast save active "$screenshotsFolder""$(date +%Y-%m-%d_%H-%M-%S)".png)
+  else
+    grim=$(grimblast --freeze save area "$screenshotsFolder""$(date +%Y-%m-%d_%H-%M-%S)".png)
+fi
+
+if [[ $? -eq 0 ]]; then
+  kill -15 pidof $(pgrep -f ksnip)
+    sleep 0.3
+    ksnip -e $grim >/dev/null 
+    exit 0
+fi
+exit 1

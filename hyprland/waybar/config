@@ -57,7 +57,7 @@
         "tooltip": false
     },
     "memory": {
-        "format": "<span font_size='18pt' rise='-3pt'></span><span> {used}Gi ❘</span>",
+        "format": "<span font_size='18pt' rise='-3pt'></span><span> {used}Gi ❘</span>",
         "tooltip": false
     },
     "temperature": {
@@ -100,9 +100,9 @@
             "hands-free": "<span font_size='18pt' rise='-3pt'>󱡏</span>",
             "headset": "<span font_size='18pt' rise='-3pt'>󰋎</span>",
             "phone": "<span font_size='18pt' rise='-3pt'></span>",
-            "portable": "<span font_size='18pt' rise='-3pt'></span>",
+            "portable": "<span font_size='18pt' rise='-3pt'>󱀞</span>",
             "car": "<span font_size='18pt' rise='-3pt'></span>",
-            "default": ["<span font_size='18pt' rise='-3pt'></span>", "<span font_size='18pt' rise='-3pt'></span>", "<span font_size='18pt' rise='-3pt'></span>"]
+            "default": ["<span font_size='18pt' rise='-3pt'>󰽺</span>", "<span font_size='18pt' rise='-3pt'>󰽭</span>", "<span font_size='18pt' rise='-3pt'>󱑽</span>"]
         },
         "on-click": "pavucontrol"
     },
@@ -124,7 +124,7 @@
       "exec": "$HOME/.local/bin/countdown 1"
     },
     "custom/power": {
-    	"format": "⏽󰤄",
+    	"format": "<span font_size='18pt'>⏻</span><span font_size='15pt'>⏽󰤄</span>",
   	  "on-click": "wlogout",
 	    "on-click-right": "wlogout",
       "tooltip": false

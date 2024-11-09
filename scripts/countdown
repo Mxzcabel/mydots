@@ -1,0 +1,29 @@
+#! /bin/bash
+#-------------------------------
+#- Script by: mxzcabel
+#- https://github.com/mxzcabel
+#- Date: 24/07/27
+#-------------------------------
+
+function countdown_NewYear () {
+  countdown_time=$(("86400 - ((10#$(date +%H) * 60 + 10#$(date +%M)) * 60) + 10#$(date +%S)"))
+  convert_hours=$(($countdown_time/3600))
+  convert_minutes=$((($countdown_time / 60) - ($convert_hours * 60)))
+  convert_seconds=$((59 - ($countdown_time - (($convert_hours * 3600) + ($convert_minutes * 60)))))
+  
+  if [ $convert_hours -eq 24 ] ; then convert_hours=0 ; fi
+  if [ $convert_seconds -eq 60 ] ; then convert_seconds=0 ; fi
+
+  printf "%s" " 󰔟 " ${convert_hours} "h" ${convert_minutes} "m" ${convert_seconds} "s"
+}
+
+if [[ $(date +%m/%d) == "12/31" ]] ; then
+  printf "\t\t%s" "$(countdown_NewYear)"
+  printf "\n%s" "󱁖 Countdown to the New Year!"
+else
+  if [[ $1 == 1 ]] ; then  
+    printf "%s" "$(printf "%s" $(($(date -d 'December 31' +%j) - $(date +%j)))) days to last"  
+  else
+    printf "%s" "$(printf "%s" " 󰔟 " $(($(date -d 'December 31' +%j) - $(date +%j)))) days to end $(date +%Y)"  
+  fi
+fi

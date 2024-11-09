@@ -14,12 +14,12 @@
 myKeyboard="logitech-usb-receiver-keyboard"
 
 # The application you desire to switch keymaps
-application="Emacs"
+application="[Ee]\macs"
 
 function handle () {
   local detectedapp=$(printf "%s" $1 | sed -n "s/\(activewindow>>$application,\)/\1/p" | sed -n "s/^.*\($application,\).*/\1/g p")
   local anyOtherWindow=$(printf "%s" $1 | sed -n "s/\(activewindow>>\)/\1/p" | sed -e "s/^.*$application,.*//g")
-
+  
   # switch to second keymap if application
   # is an activewindow
   if [[ $detectedapp == $(printf "%s" ${application} ",") ]]; then
