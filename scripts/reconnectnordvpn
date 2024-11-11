@@ -41,7 +41,7 @@ function redoConnection () {
 }
 
 if [[ -z $1 ]]; then
-	[[ -z $(getLand) ]] && printf '%s' "No country set within NordVPN status." && exit 1
+	[[ $(getLand) == "" ]] && printf '%s' "No country set within NordVPN status." && exit 0
 	printCountry=$(printf '%s' $(getLand))
 else
 	#----------------------------------------------
@@ -53,15 +53,13 @@ else
 	nordvpn countries > $tmpfile
 	printCountry=$(getCountry "$tmpfile" "$1")
 
-	if [[ -z $printCountry ]]; then
+	if [[ $printCountry == "" ]]; then
 		printf '%s' "No available country with this name was found on the list."
 		rm $tmpfile
-		exit 1
+		exit 0
 	fi
 fi
 
 # Try to reconnect here
 redoConnection
-
-
 exit 0
