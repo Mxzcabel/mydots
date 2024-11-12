@@ -84,6 +84,7 @@ xkb_symbols "ibm238l" {
     key <TLDE> {        [      less,    greater    ]       };
 };
 
+//[CUSTOM] Keyboard Layout for intl(US)
 partial alphanumeric_keys
 xkb_symbols "intl" {
 
@@ -143,6 +144,20 @@ xkb_symbols "intl" {
     key <LSGT> { [ backslash,   bar,            backslash,      bar ] };
 
     include "level3(ralt_switch)"
+};
+
+// [CUSTOM] Keyboard layout for Emacs
+partial alphanumeric_keys
+xkb_symbols "emacs" {
+
+    include "us(intl)"
+    name[Group1]= "Emacs (US)";
+
+    key <TAB> { [ Tab ] };
+    key <CAPS> { [ Control_L ] };
+
+    modifier_map Control { <CAPS> };
+    replace key <ESC> { [ Caps_Lock ] };
 };
 
 // Based on symbols/us_intl keyboard map:
