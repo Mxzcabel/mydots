@@ -37,7 +37,7 @@ function isThereMyKeyboard () {
 #---------/---------/------------/--------------/------------------
 # Get the match language to set back keymap layout
 function getKeymap () {
-  printf '%s' "$(printf '%s' $(hyprctl devices -j | awk 'c&&c!--c;/"'$1'"/{c=6}' | sed -n 's/"active_keymap": *.\('$language'\).*/\1/p'))"
+  printf '%s' $(printf '%s' $(hyprctl devices -j | awk '/'$1'/{n=7} n>0{n--; if (n==0) print}' | sed -n 's/.*\('$language'\).*/\1/p'))
 }
 #---------/---------/------------/--------------/------------------
 # Get desired application within socket2
