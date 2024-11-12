@@ -12,7 +12,7 @@
 #
 #---------/---------/------------/--------------/------------------
 # Keyboard device name
-myKeyboards=("g915-keyboard-keyboard" "logitech-usb-receiver-keyboard" "logitech-g915-wireless-rgb-mechanical-gaming-keyboard")
+myKeyboards=("logitech-usb-receiver-keyboard" "logitech-g915-wireless-rgb-mechanical-gaming-keyboard" "g915-keyboard-keyboard")
 # The application you desire to switch keymaps
 application="[Ee]\macs"
 # The language keyboard will set back
@@ -24,15 +24,14 @@ function getKeyboard () {
 }
 #---------/---------/------------/--------------/------------------
 # Change keyboard if a match is detected
-function changeKeyboard () {
+function isThereMyKeyboard () {
   for keyboard in "${myKeyboards[@]}"
   do
-    if [[ -n $(getKeyboard "$keyboard") ]]; then
-      keymap=$(printf '%s' "$keyboard")
-      return 0
-    fi
+      if [[ -n $(getKeyboard "$keyboard") ]]; then
+        device+=($keyboard)
+      fi
   done
-  return 1
+  [[ -n $device ]] && return 0 || return 1
 }
 #---------/---------/------------/--------------/------------------
 # Get the match language to set back keymap layout
@@ -54,18 +53,24 @@ function anyOtherWindow () {
 function handle () {
   ## Switch to second keymap if application is an activewindow
   if [[ -n $(detectedApp "$1") ]]; then
-      if changeKeyboard; then
-          if [[ $(getKeymap "$keymap") == $language ]]; then
-            hyprctl switchxkblayout $keymap 1 >/dev/null
+      if isThereMyKeyboard; then
+        for keyboard in "${device[@]}"
+        do
+          if [[ $(getKeymap "$keyboard") == $language ]]; then
+            hyprctl switchxkblayout $keyboard 1 >/dev/null
           fi
+        done
       fi
   fi
   ## Switch to the main keymap if any other application is an activewindow
   if [[ -z $(detectedApp "$1") ]] && [[ -n $(anyOtherWindow "$1") ]]; then
-      if changeKeyboard; then
-          if [[ $(getKeymap "$keymap") != $language ]]; then
-            hyprctl switchxkblayout $keymap 0 >/dev/null
+      if isThereMyKeyboard; then
+        for keyboard in "${device[@]}"
+        do
+          if [[ $(getKeymap "$keyboard") != $language ]]; then
+            hyprctl switchxkblayout $keyboard 0 >/dev/null
           fi
+        done
       fi
   fi
 }
