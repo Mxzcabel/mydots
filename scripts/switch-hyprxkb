@@ -20,7 +20,7 @@ language="English"
 #---------/---------/------------/--------------/------------------
 # Detect if the specific keyboard is available
 function getKeyboard () {
-  printf '%s' "$(hyprctl devices | sed -En 's/('$1')$/\1/p')"
+  printf '%s' "$(hyprctl devices | sed -n 's/\('$1'\)$/\1/p')"
 }
 #---------/---------/------------/--------------/------------------
 # Change keyboard if a match is detected
@@ -42,12 +42,12 @@ function getKeymap () {
 #---------/---------/------------/--------------/------------------
 # Get desired application within socket2
 function detectedApp () {
-  printf '%s' "$(printf '%s' $1 | sed -n "s/\(activewindow>>$application,\)/\1/p" | sed -n 's/^.*\('"$application"',\).*/\1/g p')"
+  printf '%s' "$(printf '%s' $1 | sed -n 's/\(activewindow>>'$application',\)/\1/p' | sed -n 's/^.*\('$application',\).*/\1/g p')"
 }
 #---------/---------/------------/--------------/------------------
 # Get any other window name within socket2
 function anyOtherWindow () {
-  printf '%s' "$(printf '%s' $1 | sed -n "s/\(activewindow>>\)/\1/p" | sed -e 's/^.*'"$application"',.*//g')"
+  printf '%s' "$(printf '%s' $1 | sed -n 's/\(activewindow>>\)/\1/p' | sed -e 's/^.*'$application',.*//g')"
 }
 #---------/---------/------------/--------------/------------------
 # Handle the process to set the desire keymap for chosen keyboard
