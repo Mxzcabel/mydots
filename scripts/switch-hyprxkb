@@ -3,6 +3,7 @@
 #- Script by: mxzcabel
 #- https://github.com/mxzcabel
 #- Date: 24/08/03
+#- Last update date: 24/11/12
 #- https://wiki.hyprland.org/IPC/#xdg_runtime_dirhyprhissocketsock
 #- Description: This script activate other keymaps for specific
 #-------------- applications and trigger back to the original if
