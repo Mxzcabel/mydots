@@ -13,7 +13,7 @@
 #
 #---------/---------/------------/--------------/------------------
 # Keyboard device name
-myKeyboards=("logitech-usb-receiver-keyboard" "logitech-g915-wireless-rgb-mechanical-gaming-keyboard" "g915-keyboard-keyboard")
+myKeyboards=("g915-keyboard-keyboard" "logitech-usb-receiver-keyboard" "logitech-g915-wireless-rgb-mechanical-gaming-keyboard")
 # The application you desire to switch keymaps
 application="[Ee]\macs"
 # The language keyboard will set back
@@ -28,9 +28,9 @@ function getKeyboard () {
 function isThereMyKeyboard () {
   for keyboard in "${myKeyboards[@]}"
   do
-      if [[ -n $(getKeyboard "$keyboard") ]]; then
-        device+=($keyboard)
-      fi
+    if [[ -n $(getKeyboard "$keyboard") ]]; then
+      [[ ! ${device[@]} =~ (^|[[:space:]])"$keyboard"($|[[:space:]]) ]] && device+=($keyboard)
+    fi
   done
   [[ -n $device ]] && return 0 || return 1
 }
