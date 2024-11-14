@@ -3,7 +3,7 @@
 #- Script by: mxzcabel
 #- https://github.com/mxzcabel
 #- Date: 24/08/03
-#- Last update date: 24/11/12
+#- Last update date: 24/11/14
 #- https://wiki.hyprland.org/IPC/#xdg_runtime_dirhyprhissocketsock
 #- Description: This script activate other keymaps for specific
 #-------------- applications and trigger back to the original if
@@ -13,7 +13,7 @@
 #
 #---------/---------/------------/--------------/------------------
 # Keyboard device name
-myKeyboards=("g915-keyboard-keyboard" "logitech-usb-receiver-keyboard" "logitech-g915-wireless-rgb-mechanical-gaming-keyboard")
+myKeyboards=("g915-keyboard-keyboard" "logitech-usb-receiver-keyboard" "logitech-g915-wireless-rgb-mechanical-gaming-keyboard-consumer-control" "logitech-g915-wireless-rgb-mechanical-gaming-keyboard-system-control" "logitech-g915-wireless-rgb-mechanical-gaming-keyboard")
 # The application you desire to switch keymaps
 application="[Ee]\macs"
 # The language keyboard will set back
@@ -26,13 +26,29 @@ function getKeyboard () {
 #---------/---------/------------/--------------/------------------
 # Change keyboard if a match is detected
 function isThereMyKeyboard () {
+  ## Get all the list and search for the available keyboard
   for keyboard in "${myKeyboards[@]}"
   do
+    ## If the keyboard has a match with a current device input,
+    ## include it on the list, or else exclude it, if in there
     if [[ -n $(getKeyboard "$keyboard") ]]; then
       [[ ! ${device[@]} =~ (^|[[:space:]])"$keyboard"($|[[:space:]]) ]] && device+=($keyboard)
+    else
+      ## If the quoted expanded device array (@Q) already exists,
+      ## proceed with verification.
+      if [[ -n ${device[@]@Q} ]]; then
+        ## For each index if there's a match,
+        ## then remove it from the list
+        for mapindex in ${!device[@]}
+        do
+          [[ ${device[$mapindex]} =~ "$keyboard" ]] && unset "device[$mapindex]"
+        done
+      fi
     fi
   done
-  [[ -n $device ]] && return 0 || return 1
+  ## At last check if the array have any variable at all
+  ## before continuing to change the keymap variant/layout
+  [[ ${#device[@]} -ge 1 ]] && return 0 || return 1
 }
 #---------/---------/------------/--------------/------------------
 # Get the match language to set back keymap layout
