@@ -68,26 +68,27 @@ function anyOtherWindow () {
 #---------/---------/------------/--------------/------------------
 # Handle the process to set the desire keymap for chosen keyboard
 function handle () {
- if isThereMyKeyboard; then
-   ## Switch to second keymap if application is an activewindow
-   if [[ -n $(detectedApp "$1") ]]; then
-    for keyboard in "${device[@]}"
-    do
-      if [[ $(getKeymap "$keyboard") == $language ]]; then
-        hyprctl switchxkblayout $keyboard 1 >/dev/null
+  if isThereMyKeyboard; then
+  ## Switch to second keymap if application is an activewindow
+    if [[ -n $(detectedApp "$1") ]]; then
+      for keyboard in "${device[@]}"
+      do
+        if [[ $(getKeymap "$keyboard") == $language ]]; then
+          hyprctl switchxkblayout $keyboard 1 >/dev/null
+        fi
+      done
+    else
+    ## Switch to the main keymap if any other application is an activewindow
+      if [[ -n $(anyOtherWindow "$1") ]]; then
+        for keyboard in "${device[@]}"
+        do
+          if [[ $(getKeymap "$keyboard") != $language ]]; then
+            hyprctl switchxkblayout $keyboard 0 >/dev/null
+          fi
+        done
       fi
-    done
-   fi
-   ## Switch to the main keymap if any other application is an activewindow
-   if [[ -z $(detectedApp "$1") ]] && [[ -n $(anyOtherWindow "$1") ]]; then
-    for keyboard in "${device[@]}"
-    do
-      if [[ $(getKeymap "$keyboard") != $language ]]; then
-        hyprctl switchxkblayout $keyboard 0 >/dev/null
-      fi
-    done
-   fi
- fi
+    fi
+  fi
 }
 #---------/---------/------------/--------------/------------------
 # Hyprland socket2
