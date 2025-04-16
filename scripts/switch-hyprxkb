@@ -12,12 +12,10 @@
 #------------------------------------------------------------------
 #
 #---------/---------/------------/--------------/------------------
-# Keyboard device name
-myKeyboards=("g915-keyboard-keyboard" "logitech-usb-receiver-keyboard" "logitech-g915-wireless-rgb-mechanical-gaming-keyboard-consumer-control" "logitech-g915-wireless-rgb-mechanical-gaming-keyboard-system-control" "logitech-g915-wireless-rgb-mechanical-gaming-keyboard")
-# The application you desire to switch keymaps
-application="[Ee]\macs.*"
-# The language keyboard will set back
-language="English"
+# Source variables
+config="$XDG_CONFIG_HOME/switchhyprxkb/envs.config"
+[[ ! -f $config ]] && "no config file found" && exit 1
+source $config
 #---------/---------/------------/--------------/------------------
 # Detect if the specific keyboard is available
 function getKeyboard () {
@@ -27,7 +25,7 @@ function getKeyboard () {
 # Change keyboard if a match is detected
 function isThereMyKeyboard () {
   ## Get all the list and search for the available keyboard
-  for keyboard in "${myKeyboards[@]}"
+  for keyboard in "${keyboards[@]}"
   do
     ## If the keyboard has a match with a current device input,
     ## include it on the list, or else exclude it, if in there

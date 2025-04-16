@@ -2,9 +2,9 @@
 
 screenshotsFolder=$(printf '%s' $HOME/Pictures/screenshots/)
 
-if [[ ! $(type ksnip) ]]; then
-  exit 1
-fi
+[[ ! $(type grimblast) ]] && printf '%s' "grimblast is not installed" && exit 1
+
+[[ ! $(type ksnip) ]] && printf '%s' "ksnip is not installed" && exit 1
 
 if [[ ! -d $screenshotsFolder ]]; then
   mkdir -p $screenshotsFolder
