@@ -22,8 +22,8 @@ if [[ $(date +%m/%d) == "12/31" ]] ; then
   printf "\n%s" "󱁖 Countdown to the New Year!"
 else
   if [[ $1 == 1 ]] ; then  
-    printf "%s" "$(printf "%s" $(($(date -d 'December 31' +%j) - $(date +%j)))) days to last"  
+    printf "%s" "$(printf "%s" $(($(date -d 'December 31' +%j) - 10#$(date +%j)))) days to last"
   else
-    printf "%s" "$(printf "%s" " 󰔟 " $(($(date -d 'December 31' +%j) - $(date +%j)))) days to end $(date +%Y)"  
+    printf "%s" "$(printf "%s" " 󰔟 " $(($(date -d 'December 31' +%j) - 10#$(date +%j)))) days to end $(date +%Y)"
   fi
 fi

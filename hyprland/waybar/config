@@ -14,7 +14,7 @@
     // Choose the order of the modules
     "modules-left": ["hyprland/workspaces","cpu","memory","temperature"],
     "modules-center": ["clock","custom/countdown"],
-    "modules-right": ["custom/weather","pulseaudio","custom/bar","network#wired","network#wireless","tray","custom/power"],
+    "modules-right": ["pulseaudio","custom/bar","network#wired","network#wireless","tray","custom/power"],
 
     // Modules configuration
     "hyprland/workspaces": {
@@ -74,7 +74,7 @@
         "interval": 2,
         "interface": "e*",
         "format-ethernet": "<span font_size='18pt' rise='-3pt'>󰈁</span>",
-	      "tooltip-format-ethernet": "{ifname}\n{ipaddr}",
+	"tooltip-format-ethernet": "{ifname}\n{ipaddr}",
         "tooltip-format-disconnected": "No network",
         "tooltip-format-linked": "No IP",
         "format-linked": "<span font_size='18pt' rise='-3pt'>󰈂<span font_size='10pt' rise='5pt'>No </span>󱦂</span>",
@@ -84,7 +84,7 @@
         "interval": 2,
         "interface": "wlan*",
         "format-wifi": "<span font_size='18pt' rise='-3pt'>󰖩</span>",
-	      "tooltip-format-wifi": "{ifname}\n{essid}({signalStrength}%)\n{ipaddr}",
+	"tooltip-format-wifi": "{ifname}\n{essid}({signalStrength}%)\n{ipaddr}",
         "tooltip-format-disconnected": "No network",
         "format-disconnected": "<span font_size='18pt' rise='-3pt'>󰤭</span>"
     },
@@ -104,19 +104,12 @@
             "car": "<span font_size='18pt' rise='-3pt'></span>",
             "default": ["<span font_size='18pt' rise='-3pt'>󰽺</span>", "<span font_size='18pt' rise='-3pt'>󰽭</span>", "<span font_size='18pt' rise='-3pt'>󱑽</span>"]
         },
-        "on-click": "pavucontrol"
+        "on-click": "pwvucontrol"
     },
     "custom/bar": {
       "format": "<span font_size='11pt' rise='-15pt'>❘</span>",
       "tooltip": false
     },
-    "custom/weather": {
-      "format": "<span font_size='18pt' rise='-3pt'></span><span>{}󰔄 ❘</span>",
-      "tooltip": true,
-      "interval": 3600,
-      "exec": "wttrbar --location Oslo,Norway --custom-indicator {temp_C}",
-      "return-type": "json"
-    },    
     "custom/countdown": {
       "format": "󰮾 {} ",
       "tooltip": false,
