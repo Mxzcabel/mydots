@@ -15,7 +15,7 @@ function connectionStatus () {
 
 # Match the country requested and print if available
 function getCountry () {
-	printf '%s' "$(awk '{ for(i=1;i<=NF;i++) print $i }' $1 | sed -n "/\b$2\b/Ip")"
+	printf '%s' "$(nordvpn countries | awk '{ for(i=1;i<=NF;i++) print $i }' | sed -n "/\b$1\b/Ip")"
 }
 
 # If connection status is "Connected", then return 0, if not, return 1
@@ -35,27 +35,16 @@ function redoConnection () {
 	done
 
 	nordvpn set tray on
-
-	# Remove file if it exists
-	[[ -f $tmpfile ]] && rm $tmpfile
 }
 
 if [[ -z $1 ]]; then
 	[[ $(getLand) == "" ]] && printf '%s' "No country set within NordVPN status." && exit 0
 	printCountry=$(printf '%s' $(getLand))
 else
-	#----------------------------------------------
-	# If a given country is set to the argument,
-	# generate a temporary list.
-	# ---------------------------------------------
-	tmpfile=$(printf '%s' "/tmp/countries")
-
-	nordvpn countries > $tmpfile
-	printCountry=$(getCountry "$tmpfile" "$1")
+	printCountry=$(getCountry "$1")
 
 	if [[ $printCountry == "" ]]; then
 		printf '%s' "No available country with this name was found on the list."
-		rm $tmpfile
 		exit 0
 	fi
 fi
