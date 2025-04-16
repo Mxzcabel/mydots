@@ -94,6 +94,7 @@ button:hover {
 .modules-left,
 .modules-right,
 .modules-center {
+    margin-top: 5px;
     padding-left: 10px;
     padding-right: 10px;
     font-size: 12px;
@@ -127,8 +128,7 @@ button:hover {
 }
 
 .modules-center {
-    margin-top: 5px;
-    padding-top: 3px;
+    padding-top: 1px;
 }
 
 .modules-center #clock {

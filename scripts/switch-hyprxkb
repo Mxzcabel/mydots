@@ -15,7 +15,7 @@
 # Keyboard device name
 myKeyboards=("g915-keyboard-keyboard" "logitech-usb-receiver-keyboard" "logitech-g915-wireless-rgb-mechanical-gaming-keyboard-consumer-control" "logitech-g915-wireless-rgb-mechanical-gaming-keyboard-system-control" "logitech-g915-wireless-rgb-mechanical-gaming-keyboard")
 # The application you desire to switch keymaps
-application="[Ee]\macs"
+application="[Ee]\macs.*"
 # The language keyboard will set back
 language="English"
 #---------/---------/------------/--------------/------------------

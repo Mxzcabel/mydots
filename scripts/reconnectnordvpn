@@ -15,7 +15,7 @@ function connectionStatus () {
 
 # Match the country requested and print if available
 function getCountry () {
-	printf '%s' "$(awk '{ for(i=1;i<=NF;i++) print $i }' $1 | sed -En "s/^($2)/\1/p")"
+	printf '%s' "$(awk '{ for(i=1;i<=NF;i++) print $i }' $1 | sed -n "/\b$2\b/Ip")"
 }
 
 # If connection status is "Connected", then return 0, if not, return 1
