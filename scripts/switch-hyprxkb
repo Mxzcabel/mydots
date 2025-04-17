@@ -61,7 +61,7 @@ function detectedApp () {
 #---------/---------/------------/--------------/------------------
 # Get any other window name within socket2
 function anyOtherWindow () {
-  printf '%s' "$(printf '%s' $1 | sed -En 's/(activewindow>>)/\1/p' | sed -e '/'$application',.*/d')"
+  printf '%s' "$(printf '%s' $1 | sed -En 's/(activewindow>>)/\1/p' | sed -e '/'$application',.*/Id')"
 }
 #---------/---------/------------/--------------/------------------
 # Handle the process to set the desire keymap for chosen keyboard
