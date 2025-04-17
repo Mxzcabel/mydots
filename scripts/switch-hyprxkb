@@ -51,17 +51,17 @@ function isThereMyKeyboard () {
 #---------/---------/------------/--------------/------------------
 # Get the match language to set back keymap layout
 function getKeymap () {
-  printf '%s' $(printf '%s' $(hyprctl devices -j | awk '/'$1'/{n=7} n>0{n--; if (n==0) print}' | sed -n 's/.*\('$language'\).*/\1/p'))
+  printf '%s' $(printf '%s' $(hyprctl devices -j | awk '/'$1'/{n=7} n>0{n--; if (n==0) print}' | sed -En 's/.*('$language').*/\1/p'))
 }
 #---------/---------/------------/--------------/------------------
 # Get desired application within socket2
 function detectedApp () {
-  printf '%s' "$(printf '%s' $1 | sed -n 's/\(activewindow>>'$application',\)/\1/g p')"
+  printf '%s' "$(printf '%s' $1 | sed -En 's/(activewindow>>'$application',)(.*)/\1/Ip')"
 }
 #---------/---------/------------/--------------/------------------
 # Get any other window name within socket2
 function anyOtherWindow () {
-  printf '%s' "$(printf '%s' $1 | sed -n 's/\(activewindow>>\)/\1/g p' | sed -e '/'$application',.*/d')"
+  printf '%s' "$(printf '%s' $1 | sed -En 's/(activewindow>>)/\1/p' | sed -e '/'$application',.*/d')"
 }
 #---------/---------/------------/--------------/------------------
 # Handle the process to set the desire keymap for chosen keyboard
