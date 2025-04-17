@@ -13,9 +13,10 @@
 #
 #---------/---------/------------/--------------/------------------
 # Source variables
-config="$XDG_CONFIG_HOME/switchhyprxkb/envs.config"
-[[ ! -f $config ]] && "no config file found" && exit 1
-source $config
+function sourceVariables () {
+  config="$XDG_CONFIG_HOME/switchhyprxkb/envs.config"
+  [[ -f $config ]] && source $config && return 0 || return 1
+}
 #---------/---------/------------/--------------/------------------
 # Detect if the specific keyboard is available
 function getKeyboard () {
@@ -90,4 +91,9 @@ function handle () {
 }
 #---------/---------/------------/--------------/------------------
 # Hyprland socket2
-socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do handle "$line"; done
+if ! sourceVariables; then
+  printf '%s' "No config file found"
+  exit 1
+else
+  socat -U - UNIX-CONNECT:$XDG_RUNTIME_DIR/hypr/$HYPRLAND_INSTANCE_SIGNATURE/.socket2.sock | while read -r line; do handle "$line"; done
+fi
