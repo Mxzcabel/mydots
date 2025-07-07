@@ -1,0 +1,128 @@
+#! /bin/bash
+
+screenshotsFolder=$(printf '%s' $HOME/Pictures/screenshots)
+monitorResolution="1920x1080"
+pidofsamurai=$(pgrep -f samurai-select)
+pidofgrim=$(pgrep -f grim)
+silentPrint=false
+
+# Get all variables right before starting printscreen
+function AllNeededChecked() {
+  [[ ! $(type samurai-select) ]] && printf '%s' "samurai-select is not installed" && return 1
+  
+  [[ ! $(type grim) ]] && printf '%s' "grim is not installed" && return 1
+
+  [[ ! $(type slurp) ]] && printf '%s' "slurp is not installed" && return 1
+
+  [[ ! $(type ksnip) ]] && printf '%s' "ksnip is not installed" && return 1 
+
+  [[ $1 -eq 0 ]] && printf '%s' "No argument was declared" && return 1
+
+  [[ $1 -gt 1 ]] && printf '%s' "Too much arguments were declared" && return 1
+
+  if [[ ! -d $screenshotsFolder ]]; then
+    mkdir -p $screenshotsFolder
+  fi
+}
+# See and verify what argument was desired
+function getScreenshot() {
+  case "$1" in 
+    frame)
+      select-frame
+    ;;
+    window)
+      select-window
+    ;;
+    silent-window)
+      silentPrint=true
+      select-window
+    ;;
+    geometry)
+      select-geometry
+    ;;
+    *)
+      printf '%s' "No valid argument was declared"
+      exit 1
+    ;;
+  esac
+}
+# Open printscreen when all verifications were successful with Ksnip
+function getEdition() {
+  local lastScreenshot=$(ls -t $screenshotsFolder | head -n 1)
+  local pidofksnip=$(pgrep -f ksnip)
+
+  if [[ -n $pidofksnip ]] ; then
+    kill -15 $pidofksnip
+  fi
+
+  sleep 0.8
+
+  if $silentPrint ; then 
+    $(hyprctl dispatch exec "[workspace 12 silent] ksnip -e $screenshotsFolder/$lastScreenshot") &> /dev/null &
+  else
+    ksnip -e $screenshotsFolder/$lastScreenshot &> /dev/null &
+  fi
+
+  exit 0 
+}
+# A simplest frame selection for screenshot
+function select-frame() {
+  if isSamuraiNotAlive ; then
+    runFramePrint && getEdition || exit 1
+  else
+    exit 1
+  fi
+}
+# A more robust selection with coordinates and customized frame for screenshot
+function select-geometry() {
+  if isSamuraiNotAlive ; then
+      runGeometryPrint && getEdition || exit 1 
+  else
+    exit 1 
+  fi
+}
+# A simple and fast screenshot using only grim, no previous frame edition
+function select-window() {
+  if isGrimNotAlive ; then  
+      runGrimPrint && getEdition || exit 1 
+  else 
+    exit 1
+  fi
+}
+# Verify if samurai's pid exists, otherwise exit
+function isSamuraiNotAlive() {
+  [[ -z $pidofsamurai ]] && return 0 || return 1 
+}
+# Verify if grim's pid exists, otherwise exit
+function isGrimNotAlive() {
+  [[ -z $pidofgrim ]] && return 0 || return 1
+}
+# Verify output from samurai if screenshot was done 
+function samurai-verify() {
+  [[ $1 != "" ]] && return 0 || return 1
+}
+# Verify ouput from grim if screenshot was done
+function grim-verify() {
+  [[ $1 == "" ]] && return 0 || return 1
+}
+# Do printscreen with the simplest selection frame
+function runFramePrint() {
+  local print=$(samurai-select -s -z -A --no-anim --grabber-radius=0 --border-color=FFFFFF -o "$screenshotsFolder"/%y-%M-%d_%h-%m-%s.png)
+  samurai-verify $print && return 0 || return 1
+}
+# Do printscreen with the robust frame selection (coordinates and customized frame)
+function runGeometryPrint() {
+  local print=$(samurai-select -s -z -t -A --background-color=00000030 --border-color=FFFDBF --text-color=ffdf00 --grabber-color=FFFDBF --grabber-border-color=255E0B --font-size=25 --font=Agave Nerd Font --border-width=3 --grabber-radius=6 -o "$screenshotsFolder"/%y-%M-%d_%h-%m-%s.png)
+  samurai-verify $print && return 0 || return 1
+}
+# Do printscreen with only Grim
+function runGrimPrint() {
+  local print=$(grim -c -g "0,0 $monitorResolution" "$screenshotsFolder"/"$(date +%Y-%m-%d_%H-%M-%S)".png)
+  grim-verify $print && return 0 || return 1
+}
+
+# If all variables are ok, get the screenshot
+if AllNeededChecked $# ; then
+  getScreenshot "$1"
+fi
+exit 1

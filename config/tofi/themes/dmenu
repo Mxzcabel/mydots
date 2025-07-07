@@ -1,0 +1,25 @@
+anchor = center
+width = 35%
+height = 205
+margin-top = 65
+horizontal = false
+font-size = 14
+prompt-text = " 󰈺~󰓎 : "
+font = Hasklug Nerd Font
+corner-radius = 20
+outline-width = 1
+border-width = 1
+outline-color = #1F470A
+border-color = #304748
+selection-color = #E8E4BD
+background-color =#152528
+min-input-width = 200
+num-results = 5
+result-spacing = 10
+padding-top = 5
+padding-bottom = 5
+padding-left = 0
+padding-right = 0
+hide-cursor = true
+clip-to-padding = true
+
