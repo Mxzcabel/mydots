@@ -1,0 +1,23 @@
+# For Desktop function
+export WLR_DRM_DEVICES=/dev/dri/card0:/dev/dri/card1
+export WLR_RENDER_DRM_DEVICE=/dev/dri/renderD128
+export WLR_NO_HARDWARE_CURSORS=1
+export WLR_RENDERER_ALLOW_SOFTWARE=1
+export XCURSOR_SIZE=16
+export XCURSOR_THEME=Bibata-Modern-Classic
+export LIBSEAT_BACKEND=logind
+export XDG_CURRENT_DESKTOP=Hyprland
+export XDG_SESSION_TYPE=wayland
+export XDG_SESSION_DESKTOP=Hyprland
+export _JAVA_AWT_WM_NOREPARENTING=1
+export QT_QPA_PLATFORM=wayland;xcb
+export QT_QPA_PLATFORMTHEME=qt6ct
+export GTK_THEME=Everforest-Dark-Soft
+export GDK_BACKEND=wayland,x11,*
+# export GDK_DPI_SCALE=1.2
+# export GDK_SCALE=1.2
+
+# For development and authentication
+export = DOCKER_HOST=unix://$XDG_RUNTIME_DIR/docker.sock
+export = SSH_AUTH_SOCK=$XDG_RUNTIME_DIR/ssh-agent.socket
+
