@@ -6,6 +6,8 @@ monitorResolution="1920x1080"
 
 # Frame personalization
 outsideFrameOpacity=00000070
+colorFrame=aaff00
+colorGrabber=467900
 fontFamily="agave nerd font mono"
 
 # Pidof programs
@@ -127,12 +129,12 @@ function grim-verify() {
 }
 # Do printscreen with the simplest selection frame
 function runFramePrint() {
-  local print=$(samurai-select -s -z -A --no-anim --grabber-radius=0 --background-color=$outsideFrameOpacity --border-color=ffffff --border-width=3 -o "$screenshotsFolder"/%y-%M-%d_%h-%m-%s.png)
+  local print=$(samurai-select -s -z -A --no-anim --grabber-radius=9 --grabber-color=$colorGrabber --grabber-border-color=$colorGrabber --background-color=$outsideFrameOpacity --border-color=$colorFrame --border-width=3 -o "$screenshotsFolder"/%y-%M-%d_%h-%m-%s.png)
   samurai-verify $print && return 0 || return 1
 }
 # Do printscreen with a calculated region for the active window
 function runWindowPrint() {
-  local print=$(samurai-select -s -z -r hyprland --background-color=$outsideFrameOpacity --border-color=aaff00 --border-width=4 -o "$screenshotsFolder"/%y-%M-%d_%h-%m-%s.png)
+  local print=$(samurai-select -s -z -r hyprland --background-color=$outsideFrameOpacity --border-color=$colorFrame --border-width=4 -o "$screenshotsFolder"/%y-%M-%d_%h-%m-%s.png)
   samurai-verify $print && return 0 || return 1
 }
 # Do printscreen with the robust frame selection (coordinates and customized frame)
