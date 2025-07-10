@@ -1,9 +1,18 @@
 #! /bin/bash
 
+# System settings
 screenshotsFolder=$(printf '%s' $HOME/Pictures/screenshots)
 monitorResolution="1920x1080"
+
+# Frame personalization
+outsideFrameOpacity=00000070
+fontFamily="agave nerd font mono"
+
+# Pidof programs
 pidofsamurai=$(pgrep -f samurai-select)
 pidofgrim=$(pgrep -f grim)
+
+# Internal vars
 silentPrint=false
 
 # Get all variables right before starting printscreen
@@ -33,9 +42,12 @@ function getScreenshot() {
     window)
       select-window
     ;;
-    silent-window)
+    screen)
+      select-screen
+    ;;
+    silent-screen)
       silentPrint=true
-      select-window
+      select-screen
     ;;
     geometry)
       select-geometry
@@ -63,7 +75,7 @@ function getEdition() {
     ksnip -e $screenshotsFolder/$lastScreenshot &> /dev/null &
   fi
 
-  exit 0 
+  exit 0
 }
 # A simplest frame selection for screenshot
 function select-frame() {
@@ -73,19 +85,27 @@ function select-frame() {
     exit 1
   fi
 }
-# A more robust selection with coordinates and customized frame for screenshot
-function select-geometry() {
+# A premade region selection for hyprland screenshot
+function select-window () {
   if isSamuraiNotAlive ; then
-      runGeometryPrint && getEdition || exit 1 
+    runWindowPrint && getEdition || exit 1
   else
-    exit 1 
+    exit 1
   fi
 }
 # A simple and fast screenshot using only grim, no previous frame edition
-function select-window() {
+function select-screen() {
   if isGrimNotAlive ; then  
-      runGrimPrint && getEdition || exit 1 
+      runGrimPrint && getEdition || exit 1
   else 
+    exit 1
+  fi
+}
+# A more robust selection with coordinates and customized frame for screenshot
+function select-geometry() {
+  if isSamuraiNotAlive ; then
+      runGeometryPrint && getEdition || exit 1
+  else
     exit 1
   fi
 }
@@ -107,12 +127,17 @@ function grim-verify() {
 }
 # Do printscreen with the simplest selection frame
 function runFramePrint() {
-  local print=$(samurai-select -s -z -A --no-anim --grabber-radius=0 --border-color=FFFFFF -o "$screenshotsFolder"/%y-%M-%d_%h-%m-%s.png)
+  local print=$(samurai-select -s -z -A --no-anim --grabber-radius=0 --background-color=$outsideFrameOpacity --border-color=ffffff --border-width=3 -o "$screenshotsFolder"/%y-%M-%d_%h-%m-%s.png)
+  samurai-verify $print && return 0 || return 1
+}
+# Do printscreen with a calculated region for the active window
+function runWindowPrint() {
+  local print=$(samurai-select -s -z -r hyprland --background-color=$outsideFrameOpacity --border-color=aaff00 --border-width=4 -o "$screenshotsFolder"/%y-%M-%d_%h-%m-%s.png)
   samurai-verify $print && return 0 || return 1
 }
 # Do printscreen with the robust frame selection (coordinates and customized frame)
 function runGeometryPrint() {
-  local print=$(samurai-select -s -z -t -A --background-color=00000030 --border-color=FFFDBF --text-color=ffdf00 --grabber-color=FFFDBF --grabber-border-color=255E0B --font-size=25 --font=Agave Nerd Font --border-width=3 --grabber-radius=6 -o "$screenshotsFolder"/%y-%M-%d_%h-%m-%s.png)
+  local print=$(samurai-select -s -z -t -A --background-color=$outsideFrameOpacity --border-color=fffdbf --text-color=ffdf00 --grabber-color=fffdbf --grabber-border-color=255e0b --font-size=25 --font="$fontFamily" --border-width=3 --grabber-radius=6 -o "$screenshotsFolder"/%y-%M-%d_%h-%m-%s.png)
   samurai-verify $print && return 0 || return 1
 }
 # Do printscreen with only Grim
