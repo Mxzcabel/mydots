@@ -129,7 +129,7 @@ function grim-verify() {
 }
 # Do printscreen with the simplest selection frame
 function runFramePrint() {
-  local print=$(samurai-select -s -z -A --no-anim --grabber-radius=9 --grabber-color=$colorGrabber --grabber-border-color=$colorGrabber --background-color=$outsideFrameOpacity --border-color=$colorFrame --border-width=3 -o "$screenshotsFolder"/%y-%M-%d_%h-%m-%s.png)
+  local print=$(samurai-select -s -z -A --no-anim --grabber-radius=6 --grabber-color=$colorGrabber --grabber-border-color=$colorGrabber --background-color=$outsideFrameOpacity --border-color=$colorFrame --border-width=3 -o "$screenshotsFolder"/%y-%M-%d_%h-%m-%s.png)
   samurai-verify $print && return 0 || return 1
 }
 # Do printscreen with a calculated region for the active window
